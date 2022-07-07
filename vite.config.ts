@@ -18,7 +18,7 @@ export default defineConfig(({mode})=>{
     },
     root: process.cwd(),
     server: {
-      port: 8080,
+      // port: 8080,
       proxy:{
         '/api': {
           target: 'https://netease-cloud-music-api-theta-nine-20.vercel.app',
@@ -26,8 +26,7 @@ export default defineConfig(({mode})=>{
           rewrite: (path) => path.replace(/^\/api/, '')
         }, 
       },
-      open: 'http://localhost:8080/'
-
+      // open: 'http://localhost:8080/'
     },
     css:{
       preprocessorOptions:{
