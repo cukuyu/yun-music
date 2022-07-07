@@ -1,0 +1,79 @@
+@import './themes.scss';
+
+
+$headRed:#ec4141;
+$headDeepRed:#e13e3e;
+$fontGray: #8f8f8f;
+
+
+$head-gradation1:linear-gradient(#e7e7e7 50%, #FFF 100%) fixed;
+$head-gradation2:linear-gradient(#e7e7e7 50%, #FFF 100%) fixed;
+$normal-base-color:#FFF;
+
+@mixin head-base-color($color){
+    background: $color;
+}
+@mixin normal-color($color){
+    background: $color;
+}
+
+@mixin head-gradation($color) {
+    // @include head-base-color($color);
+    [data-theme = "theme1"] & {
+        background: null;
+    }
+    @include head-base-color($color);
+    // [data-theme="1"] & {
+    //     background: null !important;
+    // }
+}
+
+@mixin comment-reply($color) {
+    @include normal-color($color);
+    [data-theme="theme1"] & {
+        background: $head-gradation1!important;
+    }
+    [data-theme="normal"] & {
+        background: $normal-base-color !important;
+    }
+}
+
+
+@mixin themeify {
+    @each $theme-name, $theme-map in $theme-normal {
+        $theme-map: $theme-map !global;
+        [data-theme="#{$theme-name}"] & { // #{} 插值表达式
+               @content;
+        }
+    }
+}
+
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}
+
+
+@mixin get-class-from-key($name,$className:'') {
+    @include themeify {
+        // 因为插值表达式会将变量转变成无符号字符串，所以可以直接当变量名
+        @if $className == '' {
+            #{nth(themed($name),2)}: nth(themed($name),1);
+        }@else{
+            #{$className}: nth(themed($name),1);
+        }
+    }
+}
+
+@mixin get-var($class,$arr,$name){
+    @include themeify {
+        // 因为插值表达式会将变量转变成无符号字符串，所以可以直接当变量名
+            #{$class}: #{$arr} nth(themed($name),1);
+    }
+}
+
+@mixin get-raga($class, $opticay:0.1, $name:'background-color',$other:"") {
+    @include themeify {
+        // 因为插值表达式会将变量转变成无符号字符串，所以可以直接当变量名
+        #{$name}: rgba(nth(themed($class),1),$opticay);
+    }
+}

@@ -1,0 +1,55 @@
+@import './scssConfig.scss';
+
+
+button {
+    background-color: transparent;
+    @include get-class-from-key('c-color');
+}
+
+
+.btn {
+    border: none;
+    outline: none;
+    height: 30px;
+    padding: 4px 14px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.btn-white {
+    @include get-var('border','1px solid','cl3-color')
+}
+
+
+.btn-white:hover{
+    @include get-class-from-key('cl3-bgc')
+}
+
+
+.btn-red{
+    background-color: #ec4141;
+    color:#fff;
+}
+
+.btn-red:hover {
+    background-color: #d73535;
+    color:#fff;
+}
+
+.no-btn{
+    outline: 0;
+    border: none;
+    // background: #fff;
+    cursor: pointer;
+}
+
+
+.circle-btn {
+    display: block;
+    height: 30px;
+    padding: 0 16px;
+    outline: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 15px;
+}
+

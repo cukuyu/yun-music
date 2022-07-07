@@ -1,0 +1,561 @@
+/* 
+ *author:crazybox521
+ *time:2021/11/1
+ *
+ *
+ *
+*/
+/* reset */
+html,
+body,
+p,
+ol,
+ul,
+li,
+dl,
+dt,
+dd,
+blockquote,
+figure,
+fieldset,
+legend,
+textarea,
+pre,
+iframe,
+hr,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    padding: 0
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: 100%;
+    font-weight: 400
+}
+
+ul {
+    list-style: none
+}
+
+button,
+input,
+select,
+textarea {
+    margin: 0;
+}
+
+
+
+
+html {
+    box-sizing: border-box
+}
+
+* {
+    box-sizing: inherit;
+    user-select: none;
+}
+
+*:before,
+*:after {
+    box-sizing: inherit
+}
+
+
+img,
+embed,
+object,
+audio,
+video {
+    height: auto;
+    max-width: 100%
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+iframe {
+    border: 0
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+td,
+th {
+    padding: 0;
+    text-align: left
+}
+
+global :root {
+    font-size: 14px;
+}
+
+
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+}
+
+
+.clearfix::after,
+.clearfix::before {
+    display: table;
+    content: "";
+    clear: both;
+}
+
+
+
+.circle {
+    border-radius: 50%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+
+/* 全局margin间距 */
+.mleft-6 {
+    margin-left: 6px;
+}
+
+.mleft-10 {
+    margin-left: 10px;
+}
+
+.mleft-12 {
+    margin-left: 12px;
+}
+
+.mleft-20 {
+    margin-left: 20px;
+}
+
+.mleft-30 {
+    margin-left: 30px;
+}
+
+.mleft-40 {
+    margin-left: 40px;
+}
+
+.mleft-100 {
+    margin-left: 100px;
+}
+
+
+.mleft-200 {
+    margin-left: 200px;
+}
+
+.mleft-300 {
+    margin-left: 300px;
+}
+
+
+.mright-3 {
+    margin-right: 3px;
+}
+
+.mright-5 {
+    margin-right: 5px;
+}
+
+.mright-10 {
+    margin-right: 10px;
+}
+
+.mright-12 {
+    margin-right: 12px;
+}
+
+.mright-20 {
+    margin-right: 20px;
+}
+
+.mright-30 {
+    margin-right: 30px;
+}
+
+.mright-40 {
+    margin-right: 40px;
+}
+
+.mright-100 {
+    margin-right: 100px;
+}
+
+.mtop-5 {
+    margin-top: 5px;
+}
+
+.mtop-10 {
+    margin-top: 10px;
+}
+
+.mtop-20 {
+    margin-top: 20px;
+}
+
+.mtop-40 {
+    margin-top: 40px;
+}
+
+.mtop-50 {
+    margin-top: 50px;
+}
+
+.mtop-60 {
+    margin-top: 60px;
+}
+
+.mbottom-10 {
+    margin-bottom: 10px;
+}
+
+.mbottom-20 {
+    margin-bottom: 20px;
+}
+
+.mbottom-30 {
+    margin-bottom: 30px;
+}
+
+.mbottom-40 {
+    margin-bottom: 40px;
+}
+
+/* 全局宽度 */
+.w-60 {
+    width: 60px;
+}
+
+.w-100 {
+    width: 100px;
+}
+
+.w-150 {
+    width: 150px;
+}
+
+.w-200 {
+    width: 200px;
+}
+
+.w-300 {
+    width: 300px;
+}
+
+.w-500 {
+    width: 500px;
+}
+
+.h-100 {
+    height: 100px;
+}
+
+.h-80 {
+    height: 80px;
+}
+
+
+.font-12 {
+    font-size: 12px;
+}
+
+.font-14 {
+    font-size: 14px;
+}
+
+.font-16 {
+    font-size: 16px;
+}
+
+.font-18 {
+    font-size: 18px;
+}
+
+.font-20 {
+    font-size: 20px;
+}
+
+.font-22 {
+    font-size: 22px;
+}
+
+.font-24 {
+    font-size: 24px;
+}
+
+.font-30 {
+    font-size: 30px;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+/* 全局鼠标样式 */
+.pointer {
+    cursor: pointer;
+}
+
+
+.img-radius5 {
+    border-radius: 5%;
+}
+
+.img-radius10 {
+    border-radius: 10%;
+}
+
+/* 文本超出变省略号 */
+.text-hidden {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.color-dark {
+    color: #000;
+}
+
+.gray {
+    color: #8f8f8f;
+}
+
+.div-line {
+    @include get-var('border-top','1px solid','cl3-color')
+}
+
+.vertical-line{
+    display: inline-block;
+    height: 20px;
+    width: 1px;
+    margin: 0 10px;
+    @include get-var("border-left",'1px solid','cl2-color');
+}
+
+.vip-level {
+    width: 35px;
+    height: 13px;
+    display: inline-block;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: 3px;
+    margin-right: 8px;
+}
+
+.vip-1 {
+    background-image: url(https://p6.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872221/9d6a/d637/06f3/b5b315ab3c14de2043abd28a2b2af5af.png);
+}
+
+.vip-1-1 {
+    background-image: url(https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872257/9f40/483a/0341/78d106c94bf17f8f1e98a2f6748061c4.png);
+}
+
+.vip-2 {
+    background-image: url(https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872290/55e5/e93b/f4a8/600868af71326408c1f905867f142520.png);
+}
+
+.vip-2-1 {
+    background-image: url(https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872312/f49a/5cad/ebcd/c1021f3f3e918f6b92b2b2bb58d4719e.png);
+}
+
+.vip-3 {
+    background-image: url(https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872333/eb74/6e09/3b0f/fd6e21661e1d32e1c52658173ffd42b6.png);
+}
+
+.vip-3-1 {
+    background-image: url(https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872358/af06/17be/49e1/a2d7fbd01fff86b32fe74dde994fefbc.png);
+}
+
+.vip-4 {
+    background-image: url(https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872387/95c0/0077/be84/015a47320318cb4199b67a3cbc063a09.png);
+}
+
+.vip-4-1 {
+    background-image: url(https://p6.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872414/467c/7865/9a62/932764dea99f7c5cdc594321de6990ec.png);
+}
+
+.vip-5 {
+    background-image: url(https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872479/15d6/b1b3/dff8/209585a9a787b00717324e75e55851d7.png);
+}
+
+.vip-5-1 {
+    background-image: url(https://p6.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872480/66ee/6807/a53f/715860bc3c2f229a123c2c69eacd2eea.png);
+}
+
+.vip-6 {
+    background-image: url(https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872499/0cd3/2985/4070/5951d11609c60e3aa96ebddeb6bb8284.png);
+}
+
+.vip-6-1 {
+    background-image: url(https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872529/0766/4eb6/679e/e0f3d42996afe78da1f3ff6d2ca1f8c6.png);
+}
+
+.vip-7 {
+    background-image: url(https://p6.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872559/f8a0/e230/60ba/3590b48db520d952cba92bf9fd72590e.png);
+}
+
+.vip-7-1 {
+    background-image: url(https://p6.music.126.net/obj/wo3DlcOGw6DClTvDisK1/4357872580/55e9/7d26/05e3/ba00bb88da839e5cf475e5ec66df8bc7.png);
+}
+
+.vip-annual {
+    width: 57px;
+    height: 36px;
+    background-image: url(https://p1.music.126.net/NH967j1VbWlUv538gj7sQQ==/109951163706253365.png);
+    background-size: 100% 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    margin-left: 10px;
+}
+
+.vip-code-230 {
+    width: 38px;
+    height: 36px;
+    background-image: url(http://p1.music.126.net/DjfcGsYjT1HqrIQk9YdV7Q==/109951163322550511.png);
+    background-size: 100% 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    margin-left: 10px;
+}
+
+
+.vip-code-230-1 {
+    width: 38px;
+    height: 36px;
+    background-image: url(http://p1.music.126.net/Ph1eQU8dh0Ag1OkNhmeNvQ==/109951163322558400.png);
+    background-size: 100% 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    margin-left: 10px;
+}
+
+.vip-code-220 {
+    width: 20px;
+    height: 36px;
+    background-image: url(http://p1.music.126.net/l81wKgnHwl3n0ayI7iVVXA==/109951163322560971.png);
+    background-size: 100% 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    margin-left: 10px;
+}
+
+.vip-code-220-1 {
+    width: 20px;
+    height: 36px;
+    background-image: url(http://p1.music.126.net/dV4HtiK1DY55xX9Z95ZR2A==/109951163322563453.png)
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    /* background-color: #e0e0e0; */
+    @include get-class-from-key('cl2-bgc');
+    @include get-class-from-key('srcoll-shadow');
+}
+
+
+
+
+.c-bgc{
+    @include get-class-from-key('c-bgc')
+}
+
+.cl-bgc{
+    @include get-class-from-key('cl-bgc')
+}
+
+.cl2-bgc{
+    @include get-class-from-key('cl2-bgc')
+}
+
+.cl3-bgc{
+    @include get-class-from-key('cl3-bgc')
+}
+
+.cl4-bgc{
+    @include get-class-from-key('cl4-bgc')
+}
+
+.cl5-bgc{
+    @include get-class-from-key('cl5-bgc')
+}
+
+.cl6-bgc{
+    @include get-class-from-key('cl6-bgc')
+}
+
+.cl7-bgc{
+    @include get-class-from-key('cl7-bgc')
+}
+
+
+
+
+
+.c-color{
+    @include get-class-from-key('c-color')
+}
+
+.cl-color{
+    @include get-class-from-key('cl-color')
+}
+
+// .cl1-color{
+//     @include get-class-from-key('cl1-color')
+// }
+
+.cl2-color{
+    @include get-class-from-key('cl2-color')
+}
+
+.cl3-color{
+    @include get-class-from-key('cl3-color')
+}
+
+.cl4-color{
+    @include get-class-from-key('cl4-color')
+}
+
+.cl5-color{
+    @include get-class-from-key('cl5-color')
+}
+
+
+.bright-hover:hover{
+    @include get-class-from-key('bright')
+}
+
+.cblue-color{
+    @include get-class-from-key('cblue-color')
+}

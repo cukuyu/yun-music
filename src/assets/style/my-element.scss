@@ -1,0 +1,236 @@
+.el-slider :hover  .el-slider__button{
+    display: inline-block;
+    height: 9px;  
+}
+
+.el-slider__button.hover, .el-slider__button:hover {
+    cursor: auto;
+}
+
+.el-slider__button-wrapper.hover, .el-slider__button-wrapper:hover {
+    cursor: auto;
+}
+
+.el-slider__button {
+    display: none;
+    border: 0;
+    width: 9px;
+    height: 9px;
+    line-height: 9px;
+    background-color: #e13e3e;
+} 
+
+.el-slider__bar {
+    background-color: #ec4141;
+    height: 3px
+}
+
+.time-progress .el-slider__button-wrapper {
+    top: -15px;
+}
+
+.time-progress .el-slider__runway {
+    height: 3px;
+    @include get-class-from-key('fl-bgc');
+    cursor: auto;
+}
+
+
+.time-progress .el-slider :hover {
+    height: 5px;
+}
+
+.time-progress .el-slider :hover .el-slider__button-wrapper{
+    height: 36px;
+}
+
+.time-progress .el-slider :hover  .el-slider__bar{
+    height: 5px;
+}
+.time-progress .el-slider :hover .el-slider__button{
+    height: 9px;
+}
+
+
+.el-slider.is-vertical{
+    width: 3px;
+    /* margin-left: -2px; */
+}
+
+.el-slider.is-vertical .el-slider__runway{
+    margin: 0 auto; 
+    margin-left: -2px;
+}
+
+.el-slider.is-vertical .el-slider__button-wrapper{
+    margin-left: -1px;
+}
+
+
+.el-drawer__body {
+    overflow: auto;
+}
+
+.right-drawer{
+    background-color: antiquewhite;
+    pointer-events: none;
+}
+
+/* 自定义头部输入框 */
+.search-input  .el-input__inner {
+    height: 36px;
+    line-height: 36px;
+    border: 0 none;
+    border-radius: 16px;
+    color: #fff;
+    box-shadow:none;
+    @include get-class-from-key('h-bgc');
+    filter: brightness(90%);
+}
+
+/* 自定义头部听歌识曲样式 */
+.know-music .el-button {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    border: 0 none;
+    border-radius: 100px;
+    color: #fffafa;
+    box-shadow:none;
+    @include get-class-from-key('h-bgc');
+    filter: brightness(95%);
+}
+
+/* 自定义头部输入框前置图标样式 */
+.header-bar .el-input__icon {
+    color: #fff;
+    line-height: 36px;
+}
+
+// .aside-bar .el-menu{
+//     @include get-class-from-key('c-bgc')
+// }
+
+.aside-bar  .el-menu-item {
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 3px;
+    --el-menu-hover-bg-color:#f6f6f7;
+    /* --el-menu-active-color:#f6f6f7; */
+}
+
+
+.el-carousel__item {
+    border-radius: 8px;
+}
+
+.el-carousel__indicators {
+    margin-top: 0px;
+}
+
+.el-carousel__indicators .el-carousel__button {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%  ;
+}
+
+.detail-search .el-input__inner{
+    width: 215px;
+    height: 25px;
+    line-height: 25px;
+    // background-color: #f7f7f7;
+    @include get-class-from-key('cl5-bgc');
+    border: 0 none;
+    border-radius: 16px;
+    // color: #000;
+    @include get-class-from-key('cl4-color');
+    box-shadow:none;
+}
+
+.music-list .el-table {
+    @include get-var('--el-table-bg-color','','c-bgc');
+    @include get-var('--el-table-header-bg-color','','c-bgc');
+    @include get-var('--el-table-tr-bg-color','','cl4-bgc');
+    @include get-var('--el-fill-color-lighter','','c-bgc');
+    @include get-var('--el-fill-color-lighter','','c-bgc');
+    @include get-var('--el-table-row-hover-bg-color','','draw-hover-bgc');
+    @include get-var('--el-table-border-color','','c-bgc');
+}
+
+.draw-table .el-table{
+    @include get-var('--el-table-bg-color','','draw-bgc');
+    @include get-var('--el-table-header-bg-color','','draw-bgc');
+    @include get-var('--el-table-tr-bg-color','','draw-stripe-bgc');
+    @include get-var('--el-fill-color-lighter','','draw-bgc');
+    @include get-var('--el-table-row-hover-bg-color','','draw-hover-bgc');
+    @include get-var('--el-table-border-color','','draw-bgc');
+}
+
+
+.el-table td.el-table__cell,
+.el-table th.el-table__cell.is-leaf {
+    border-bottom: none;
+}
+
+
+
+.el-divider--horizontal {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.draw-table el-table{
+    z-index: 100;
+}
+
+/* trans 动画 */
+.slide-fade-enter-active {transition: all .2s ease;}
+.slide-fade-leave-active {transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);}
+.slide-fade-enter, .slide-fade-leave-to{transform: translateX(5px);opacity: 0;}
+
+
+.el-table{
+    width: 100%;
+}
+.el-table__header-wrapper table,.el-table__body-wrapper table{
+width: 100% !important;
+}
+
+.el-table__body, .el-table__footer, .el-table__header{
+table-layout: auto;
+}
+
+.el-pagination{
+    --el-pagination-hover-color: #000;
+    --el-pagination-button-bg-color:#FFF;
+}
+
+.el-pagination button, .el-pagination.is-background .el-pager li:not(.disabled)
+{   
+    height: 25px;
+}
+
+.el-pagination.is-background .el-pager li:not(.is-disabled).is-active {
+    background-color: #ec4141;
+    color: #FFF;
+    font-weight: 700;
+}
+.el-pagination.is-background .btn-next:hover, .el-pagination.is-background .btn-prev:hover, .el-pagination.is-background .el-pager li:not(.is-active):hover {
+    @include get-class-from-key('cl-bgc');
+    @include get-class-from-key('c-color');
+}
+
+.el-pagination.is-background .btn-next, .el-pagination.is-background .btn-prev, .el-pagination.is-background .el-pager li{
+    min-width: 25px;
+    border:1px solid #e6e6e6;
+    @include get-var('border','1px solid','cl3-color');
+    border-radius: 20%;
+    @include get-class-from-key('c-bgc');
+    @include get-class-from-key('c-color');
+}
+
+.el-pagination button:disabled{
+    cursor: auto;
+}
+
+

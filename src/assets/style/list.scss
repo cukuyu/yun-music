@@ -1,0 +1,11 @@
+.stripe-list-item{
+    &:nth-child(even) {
+        @include get-class-from-key('cl5-bgc');
+      }
+    &:nth-child(odd) {
+        @include get-class-from-key('c-bgc');
+    }
+    &:hover {
+        @include get-class-from-key('draw-hover-bgc');
+    }
+}

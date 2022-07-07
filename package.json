@@ -1,0 +1,39 @@
+{
+  "name": "vue-music",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "tauri": "tauri",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
+    "prettier": "prettier --write ."
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^1.1.4",
+    "@icon-park/vue": "^1.4.1",
+    "@tauri-apps/api": "^1.0.1",
+    "axios": "^0.26.1",
+    "element-plus": "^2.1.8",
+    "pinia": "^2.0.0-rc.10",
+    "vue": "^3.2.25",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "@vitejs/plugin-vue": "^2.3.0",
+    "dart-sass": "^1.25.0",
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.5.0",
+    "prettier": "^2.6.2",
+    "sass": "^1.49.11",
+    "typescript": "^4.5.4",
+    "vite": "^2.9.0",
+    "vue-tsc": "^0.29.8"
+  }
+}
