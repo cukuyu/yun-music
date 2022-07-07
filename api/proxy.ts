@@ -1,4 +1,4 @@
-const request = require('request');
+import {request} from 'request'
 
 module.exports = (req:any, res:any) => {
   // proxy middleware options
