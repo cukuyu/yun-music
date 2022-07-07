@@ -11,13 +11,13 @@ export default defineConfig({
   },
   server: {
     port: 8080,
-    proxy:{
-      '/api': {
-        target: 'https://netease-cloud-music-api-theta-nine-20.vercel.app',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }, 
-    },
+    // proxy:{
+    //   '/api': {
+    //     target: 'https://netease-cloud-music-api-theta-nine-20.vercel.app',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, '')
+    //   }, 
+    // },
     open: 'http://localhost:8080/'
 
   },
