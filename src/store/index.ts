@@ -70,11 +70,13 @@ export const useMainStore = defineStore({
 
     async getAcount(){
       const res = await getAccount()
+      console.log("getAcount123",res)
+      console.log("login",this.login)
       if(res.code!=200) return
       else if(res.account!=null){
         this.setLogin(true)
         this.setLoginInfo(res.account,res.profile)
-        console.log("getAcount",res)
+        console.log("getAcount123",res)
         this.getLikeList()
         this.getMyPlayList()
       } else {
