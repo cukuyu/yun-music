@@ -1,3 +1,6 @@
 {
-    "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+    "rewrites": [{ "source": "/(.*)", "destination": "/" },
+                 { "source": "/api", "destination": "https://netease-cloud-music-api-theta-nine-20.vercel.app" } 
+                ]
+
 }
