@@ -11,9 +11,6 @@ module.exports = (req:any, res:any) => {
   var options = {
     'method': 'GET',
     'url': target,
-    'headers': {
-      'Authorization': res.headers['authorization']
-    }
   };
   request(options, function (error:any, response:any) {
     if (error) throw new Error(error);
