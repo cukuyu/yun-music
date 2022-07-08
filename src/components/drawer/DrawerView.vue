@@ -1,5 +1,5 @@
 <template>
-
+    <!-- 歌曲抽屉详细页面 -->
     <div class="drawer-view" ref="drawerViewRef" v-if="store.drawerView">
         <header class="header"><DrawerViewHeaderVue></DrawerViewHeaderVue></header>
         <div class="drawer-view-container">
@@ -60,14 +60,11 @@ const props = defineProps({
     }
 })
 
-watch(()=>store.drawerView,
-     (val)=>{
-        if(val)  window.document.documentElement.setAttribute("data-theme","red")
-        else window.document.documentElement.setAttribute("data-theme","red")
-     }
-)
 
+//自适应高度
 let height = computed(()=> (store.clientHeight-80)+"px")
+
+
 let commentRef = ref()
 let drawerViewRef = ref()
 let isTop = ref(true)
@@ -102,7 +99,7 @@ const showEditComment = ()=>{
     bottom: 80px;
     height: v-bind(height);
     width: 100%;
-    background: linear-gradient(#e7e7e7 50%, #FFF 70%) fixed;
+    background: var(--draw-bg);
     animation: open-view 0.3s ease-in  ;
     overflow-y: scroll;
 }
@@ -123,8 +120,8 @@ const showEditComment = ()=>{
 .left-edit-button, .middle-edit-button, .go-top-button {
     position: fixed;
     bottom: 95px;
-    background-color: #f1f1f1;
-    color: #000;
+    background-color: var(--draw-comment-button-bgc);
+    color: var(--lyric-active-color);
     border-radius: 16px;
     overflow: hidden;
 }

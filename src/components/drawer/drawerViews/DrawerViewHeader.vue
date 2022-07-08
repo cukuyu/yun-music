@@ -37,14 +37,6 @@
             </div>
         </div>
         <div class="header-right">
-            <div class="trans-skin mleft-10">
-                <i class="iconfont icon-skin font-20 pointer" @click="themeSkinView = !themeSkinView">
-                </i>
-                <div class="theme-skin" ref="themeRef" v-if="themeSkinView">
-                    <ThemeSkin>
-                    </ThemeSkin>
-                </div>
-            </div>
             <div class="global-setup mleft-20 ">
                 <i class="iconfont icon-setup font-20"></i>
             </div>
@@ -72,7 +64,7 @@
 
 
 <script lang="ts" setup>
-import {ref, computed, watch} from 'vue'
+import {ref} from 'vue'
 import {useRouter} from 'vue-router'
 import { useMainStore } from '@/store';
 import ThemeSkin from '@/components/header/headerBar/ThemeSkin.vue';
@@ -93,12 +85,12 @@ let themeSkinView = animation.clickHidden(themeRef)
 
 .drawer-header {
     height: 60px;
-    color: #ffffff;
+    
     display: flex;
     align-items: center;
     justify-content: space-between;
+    color: var(--draw-h-color);
     // background: $headRed;
-    @include head-gradation($headRed);
     .header-left {
         display: flex;
         align-items: center;
@@ -110,13 +102,6 @@ let themeSkinView = animation.clickHidden(themeRef)
 
         .trans-skin{
             position: relative;
-            // .theme-skin{
-            //     position: absolute;
-            //     z-index: 999;
-            //     top: 45px;
-            //     left:-80px
-            //     // color: #000;
-            // }
         }
     }
     
@@ -148,9 +133,10 @@ let themeSkinView = animation.clickHidden(themeRef)
         justify-content: center;
         margin-right: 10px;
         border-radius: 100%;
-        color: #FFF;
-        @include head-gradation($headRed);
-        filter: brightness(95%) 
+        color: var(--draw-h-color);
+        background: var(--draw-bg) !important;
+        filter: var(--draw-bright);
+        // @include get-class-from-key('bright');
     }
 }
 

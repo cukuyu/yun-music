@@ -24,24 +24,24 @@
           <div>
             <div class="detail-desc mleft-30">
                 <div class="detail-img-wrapper">
-                    <img class="img img-radius5"  :src="info.coverImgUrl" alt="">
+                    <img class="img img-radius5"  :src="info?.coverImgUrl" alt="">
                 </div>
                 <div class="detail-desc-info">
                     <div class="info-title">
                       <Tag text="歌单"></Tag>
-                      <span class="font-20 font-bold mleft-10">{{info.name}}</span>
+                      <span class="font-20 font-bold mleft-10">{{info?.name}}</span>
                       <span><el-icon class="list-edit font-14"><edit/></el-icon></span>
                     </div>
                     <div class="info-author">
                       <img class="author-img img circle pointer mright-12" 
-                      :src="info.creator.avatarUrl" 
-                      @click="toUserDetail(info.creator.userId)">
+                      :src="info?.creator?.avatarUrl" 
+                      @click="toUserDetail(info?.creator?.userId)">
                       <span class="author-name font-12 pointer mright-12 bright-hover cblue-color" 
-                      @click="toUserDetail(info.creator.userId)"
+                      @click="toUserDetail(info?.creator?.userId)"
                       >
-                        {{info.creator.nickname}}
+                        {{info?.creator?.nickname}}
                       </span>
-                      <span class="created-time font-12 pointer cl2-color">{{info.createTime}}</span>
+                      <span class="created-time font-12 pointer cl2-color">{{info?.createTime}}</span>
                     </div>
                     <div class="info-btn">
                       <button class="btn btn-white mright-10 play-all"> 
@@ -61,24 +61,24 @@
                         <span>下载全部</span>
                       </button>
                     </div>
-                    <div class="info-tag font-14" v-show="info.tags.length>0">
+                    <div class="info-tag font-14" v-show="info?.tags?.length>0">
                       <!-- v-for tag --> 
                       <span>标签：</span>
                       <span 
                       class="bright-hover cblue-color pointer"
-                      v-for="(item) in info.tags" 
+                      v-for="(item) in info?.tags" 
                       :key="item">
                         {{item}}
                       </span>
                     </div>
                     <div class="info-num font-14" >
-                      歌曲：<span class="cl2-color mright-12">{{info.trackCount}}</span>
-                      播放：<span class="cl2-color">{{info.playCount}}</span>
+                      歌曲：<span class="cl2-color mright-12">{{info?.trackCount}}</span>
+                      播放：<span class="cl2-color">{{info?.playCount}}</span>
                     </div>
-                    <div class="intro font-14" v-show="info.description">
+                    <div class="intro font-14" v-show="info?.description">
                       <input id="check" type="checkbox">
                       <div class="element">
-                        <p>简介：<span class="cl2-color">{{info.description}}</span></p>
+                        <p>简介：<span class="cl2-color">{{info?.description}}</span></p>
                       </div>
                       <div class="check-label">
                         <label for="check" class="check-in"><i class="iconfont  icon-zhankai"></i></label>
@@ -89,7 +89,7 @@
             </div>
             <!-- 歌曲列表 -->
             <div class="detail-head">
-              <TabMenu :menuList="[{name:'歌曲列表'}, {name:`评论(${info.commentCount})`},{name:'收藏者'}]" @menuClick="handMenuClick" mode="menu">
+              <TabMenu :menuList="[{name:'歌曲列表'}, {name:`评论(${info?.commentCount})`},{name:'收藏者'}]" @menuClick="handMenuClick" mode="menu">
               </TabMenu>
               <div class="detail-search mright-30">
                 <el-input
@@ -131,7 +131,7 @@ const router = useRouter()
 const store = useMainStore()
 
 onBeforeRouteUpdate( async(to) => {
-    await getPlayList(to.fullPath.split("/").slice(-1)[0])
+    getPlayList(to.fullPath.split("/").slice(-1)[0])
 });
 
 const props = defineProps({
@@ -157,7 +157,9 @@ let list = computed(()=>{
 
 //加载歌单信息
 const getPlayList = async(id:string)=>{
+  console.log("时间",new Date().getSeconds())
   const res = await getPlayListDetail(id )
+  console.log("时间",new Date().getSeconds())
   console.log("歌单信息",res)
   if(res.code==200){
     res.playlist.createTime = new Date(res.playlist.createTime).toLocaleDateString().replaceAll("/","-")
@@ -166,7 +168,8 @@ const getPlayList = async(id:string)=>{
     playlist.value = Object.freeze(res.playlist.tracks)
   }
 }
-await getPlayList(props.id)
+
+getPlayList(props.id)
 
 const handMenuClick = async()=>{
 }

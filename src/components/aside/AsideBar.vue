@@ -109,10 +109,9 @@
 
 
 <script lang="ts" setup>
-import {ref ,reactive, computed, onMounted ,watch} from 'vue'
+import {ref ,reactive, computed, onMounted} from 'vue'
 import { useMainStore } from '@/store/index'
 import { useRouter } from 'vue-router'
-
 
 const router = useRouter()
 const store = useMainStore()
@@ -137,13 +136,15 @@ let myMusicList = reactive([
 
 let login = computed(()=> store.login)
 let profile = computed(()=> store.profile)
-let myPlayList = computed(()=> store.myPlayList)
+let myPlayList = computed(
+    ()=> {
+        return store.myPlayList
+    }
+    )
 let indexPath = ref("/personalrecom")
 
-
 onMounted(()=>{
-    store.getAcount()
-    console.log("getAcount")
+    if(!store.login || myPlayList.value.length==0) store.getAcount()
 })
 
 let creList = computed(()=>{

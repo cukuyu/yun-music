@@ -559,3 +559,18 @@ global :root {
 .cblue-color{
     @include get-class-from-key('cblue-color')
 }
+
+
+body{
+    //歌曲抽屉详情
+    --draw-bg : linear-gradient(#e7e7e7 50%, #FFF 70%) fixed;
+    --draw-h-color : #7a7a7a;
+    --draw-bright : brightness(95%);
+    --draw-record-bgc : #c4c3c6;
+    --draw-comment-button-bgc: #f1f1f1;
+    //歌词
+    --lyric-color : #666666;
+    --lyric-active-color : #000000;
+
+
+}

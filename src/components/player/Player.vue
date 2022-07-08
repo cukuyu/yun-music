@@ -214,7 +214,7 @@ const getImgInfo = ()=>{
     if(musicList.value[currentIndex.value].al.picUrl)
         imgInfo.imgUrl = musicList.value[currentIndex.value].al.picUrl
     else 
-        imgInfo.imgUrl = 'https://cdn.jsdelivr.net/gh/crazybox521/blogImg/music.jpg'
+        imgInfo.imgUrl = ''
     imgInfo.author = musicList.value[currentIndex.value].ar[0].name
     imgInfo.name = musicList.value[currentIndex.value].name
 }
@@ -263,6 +263,16 @@ const nextMusic = (val:number)=>{
     let nextIndex = (currentIndex.value+val+musicList.value.length) % (musicList.value.length)
     store.currentMusicId = musicList.value[nextIndex].id
     store.currentIndex = nextIndex
+
+    //设置drawerView的背景颜色变化
+    if(store.drawerView && window.document.documentElement.getAttribute("data-theme")!="drak"){
+        let rgb = []
+        for(let i=0;i<3;i++){
+            rgb.push(Math.floor(Math.random()*60)+170)
+        }
+        document.body.style.setProperty('--draw-bg', `linear-gradient(rgb(${rgb[0]},${rgb[1]},${rgb[2]}) 0%, #FFF 40%) fixed`)
+    }
+   
 }
 
 
@@ -270,8 +280,29 @@ const nextMusic = (val:number)=>{
 //     console.log("true")
 // }
 
+
+//设置drawerView的主题
 const changeDrawerView = ()=>{
     store.drawerView = !store.drawerView
+    if(store.drawerView){
+        if(window.document.documentElement.getAttribute("data-theme")!="drak"){
+                document.body.style.setProperty('--draw-bg', 'linear-gradient(#e7e7e7 0%, #FFF 40%) fixed')
+                document.body.style.setProperty('--draw-h-color', '#7a7a7a')
+                document.body.style.setProperty('--draw-bright', 'brightness(95%)')
+                document.body.style.setProperty('--draw-record-bgc', '#c4c3c6')
+                document.body.style.setProperty('--lyric-color', '#666666')
+                document.body.style.setProperty('--lyric-active-color', '#000000')
+                document.body.style.setProperty('--draw-comment-button-bgc', '#f1f1f1')
+            }else{
+                document.body.style.setProperty('--draw-bg', 'linear-gradient(#2c2c2c 0%, #2b2b2b 40%) fixed')
+                document.body.style.setProperty('--draw-h-color', '#808080')
+                document.body.style.setProperty('--draw-bright', 'brightness(120%)')
+                document.body.style.setProperty('--draw-record-bgc', '#353535')
+                document.body.style.setProperty('--lyric-color', '#696969')
+                document.body.style.setProperty('--lyric-active-color', '#ffffff')
+                document.body.style.setProperty('--draw-comment-button-bgc', '#3e3e3e')
+        }
+    }
 }
 
 //点击视图外 关闭视图

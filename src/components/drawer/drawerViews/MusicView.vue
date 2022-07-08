@@ -80,7 +80,7 @@ const props = defineProps({
             top: 30px;
             width: 280px;
             height: 280px;
-            background-color: #c4c3c6;
+            background-color: var(--draw-record-bgc);
             border-radius: 50%;
             .record-wrap{
                 display: flex;

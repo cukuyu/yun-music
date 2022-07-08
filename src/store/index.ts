@@ -69,38 +69,38 @@ export const useMainStore = defineStore({
     },
 
     async getAcount(){
-      const res = await getAccount()
-      console.log("getAcount123",res)
-      console.log("login",this.login)
-      if(res.code!=200) return
-      else if(res.account!=null){
-        this.setLogin(true)
-        this.setLoginInfo(res.account,res.profile)
-        console.log("getAcount123",res)
-        this.getLikeList()
-        this.getMyPlayList()
-      } else {
-        this.setLogin(false)
-        // this.setLoginInfo({account: {} , profile: {} })
-      }
+      getAccount().then((res)=>{
+        if(res.code!=200) return
+        else if(res.account!=null){
+          this.setLogin(true)
+          this.setLoginInfo(res.account,res.profile)
+          this.getLikeList()
+          this.getMyPlayList()
+        } else {
+          this.setLogin(false)
+        }
+      })
     },
     async getLikeList(){
       if (!this.login) return
-      const res = await getLikeIdList(this.profile.userId)
-      if(res.code!=200) return
-      else if(res.ids instanceof Array){
-        this.setLikeList({type:'get',data:res.ids})
-      }
+      getLikeIdList(this.profile.userId).then((res)=>{
+        if(res.code!=200) return
+        else if(res.ids instanceof Array){
+          this.setLikeList({type:'get',data:res.ids})
+        }
+      })
+    
     },
 
     async getMyPlayList(){
       
       if (!this.login) return
-      const res = await getUserPlayList(this.profile.userId)
-      if(res.code!=200) return
-      else {
-        this.myPlayList = res.playlist
-      }
+      getUserPlayList(this.profile.userId).then((res)=>{
+        if(res.code!=200) return
+        else {
+          this.myPlayList = res.playlist
+        }
+      })
     },
 
     playMusic(payLoad:{list:musicInfo[],id:number}){

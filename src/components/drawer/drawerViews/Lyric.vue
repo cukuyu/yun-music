@@ -4,7 +4,7 @@
        v-for="(line, index) in lyricObj?.lines"
         :key="index"
         class="lyric-lines"
-        :class="{'font-18 font-bold':index==lyricObj?.curren,'font-16':index!=lyricObj?.curren}"
+        :class="{'active':index==lyricObj?.curren,'normal':index!=lyricObj?.curren}"
        > 
          {{ line?.txt }}
        </p>
@@ -100,7 +100,6 @@ getLyricById()
     height: 400px;
     overflow-y: scroll;
     .lyric-lines{
-        color: #666666;
         text-align: center;
         height: 40px;
     }
@@ -114,6 +113,16 @@ getLyricById()
     // left: 0;
     // box-shadow:0 0 50px 30px  inset;
     // }
+}
+
+.active {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--lyric-active-color);
+}
+.normal {
+    font-size: 16px;
+    color: var(--lyric-color);
 }
 
 

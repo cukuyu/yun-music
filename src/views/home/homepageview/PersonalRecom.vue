@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import {getBanner,} from '@/api/api_other'
 import {getRecommend, getPersonalized,} from '@/api/api_playlist'
-import {computed, reactive, shallowReactive} from 'vue'
+import {computed, reactive, ref} from 'vue'
 import ImgList from '@/components/list/ImgList.vue'
 import { useRouter } from 'vue-router';
 import {useMainStore} from '@/store/index'
@@ -40,9 +40,9 @@ const format = useFormat()
 const router = useRouter()
 const store = useMainStore()
 
-let bannerList = reactive<banner[]>([])
+let bannerList = ref<banner[]>([])
 let login = computed(()=> store.login)
-let recSongList = shallowReactive([])
+let recSongList = ref<[]>([])
 const limit = 30
 
 
@@ -57,18 +57,20 @@ const toPlayListDetail = (id: number|string)=>{
 }
 // bannerList = await getBanner().then((res)=>res.banners)
 
-const getBannerList = async()=>{
-    const res = await getBanner()
-    if(res.code==200) bannerList = res.banners
+const getBannerList = ()=>{
+    getBanner().then((res)=>{
+         if(res.code==200) bannerList.value = res.banners
+    })
 }
 
 
 
-const getRecSongList = async()=>{
-        const res = await getRecommend()
-        if(res.code===200){
-            recSongList = res.recommend
-        }
+const getRecSongList = ()=>{
+        getRecommend().then((res)=>{
+            if(res.code==200){
+                recSongList.value = res.recommend
+            }
+        })
 }
 const getPersonal = async ()=>{
     if(login.value) return
@@ -77,8 +79,8 @@ const getPersonal = async ()=>{
         recSongList = Object.freeze(res.result)
     }else return
 }
-await getBannerList()
-await getRecSongList()
+getBannerList()
+getRecSongList()
 
 // getRecSongList()
 // getPersonal()

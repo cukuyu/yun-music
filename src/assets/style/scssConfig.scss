@@ -71,9 +71,26 @@ $normal-base-color:#FFF;
     }
 }
 
+
 @mixin get-raga($class, $opticay:0.1, $name:'background-color',$other:"") {
     @include themeify {
         // 因为插值表达式会将变量转变成无符号字符串，所以可以直接当变量名
         #{$name}: rgba(nth(themed($class),1),$opticay);
     }
+}
+
+
+//draw 渐变主题
+
+@mixin draw-theme{
+    @each $theme-name, $theme-map in $theme-drawer {
+        $theme-map: $theme-map !global;
+        [data-theme="#{$theme-name}"] & { // #{} 插值表达式
+               @content;
+        }
+    }
+}
+
+@mixin get-draw-class {
+    
 }

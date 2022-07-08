@@ -77,15 +77,26 @@
 }
 
 /* 自定义头部输入框 */
-.search-input  .el-input__inner {
+.header-bar .search-input  .el-input__inner {
     height: 36px;
     line-height: 36px;
     border: 0 none;
     border-radius: 16px;
-    color: #fff;
     box-shadow:none;
     @include get-class-from-key('h-bgc');
-    filter: brightness(90%);
+    @include get-class-from-key('h-color');
+    @include get-class-from-key('bright');
+}
+
+.drawer-header .search-input .el-input__inner {
+    height: 36px;
+    line-height: 36px;
+    border: 0 none;
+    border-radius: 16px;
+    box-shadow:none;
+    background: var(--draw-bg);
+    color: var(--draw-h-color);
+    filter: var(--draw-bright);
 }
 
 /* 自定义头部听歌识曲样式 */

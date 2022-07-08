@@ -104,10 +104,10 @@ $theme-normal:(
 );
 
 $theme-drawer : (
-    normal : (
+    'red' : (
         background: linear-gradient(#e7e7e7 50%, #FFF 100%) fixed
     ),
-    drak:(
+    'drak' : (
         background: linear-gradient(#313131 50%, #2b2b2b 100%) fixed 
     )
 )
