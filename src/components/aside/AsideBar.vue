@@ -118,7 +118,7 @@ const store = useMainStore()
 let commonList = reactive([
     {path:'/personalrecom', name:'发现音乐'},
     {path:'/podcast', name:'播客', },
-    {path:'/video', name:'视频',},
+    {path:'/videoview', name:'视频',},
     {path:'/follows', name:'关注', },
     {path:'/live', name:'直播',},
     {path:'/personalfm', name:'私人FM'},

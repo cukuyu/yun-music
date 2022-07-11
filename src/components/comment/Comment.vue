@@ -78,7 +78,7 @@ const props = defineProps({
         default:0
     },
     id:{
-        type: Number,
+        type: String,
         default:0
     },
     scrollDom:{
@@ -152,7 +152,7 @@ const setScrollTop = ()=>{
 //评论点赞
 const toLikeComment = async (commentId:number,liked:boolean)=>{
     if(store.login==false) return ElMessage.error("请先登录")
-    let obj = { id: store.currentMusicId, commentId:commentId, t: 1, type: query.value.type }
+    let obj = { id: store.currentMusicId+"", commentId:commentId, t: 1, type: query.value.type }
       if (liked) {
         obj.t = 0
     }
@@ -174,7 +174,7 @@ const toLikeComment = async (commentId:number,liked:boolean)=>{
 let commentInfo = reactive<sendCommentPar>({
     t:1,
     type: 0,
-    id: 0,
+    id: "0",
     content: '',
     commentId: 0
 })

@@ -74,7 +74,6 @@ const getArtistList = async () => {
     isLoading.value = true
     const res = await ToGetArtistList(queryInfo)
     if(res.code!=200) return 
-    console.log("getArtistList",res)
     artistList.push(...res.artists)
     hasMore.value = res.more
     //防抖
@@ -86,7 +85,7 @@ const getArtistList = async () => {
 }
 
 const load = (num:number)=>{
-    if(isLoading.value ) return
+    if(isLoading.value) return
     if(!hasMore.value){
         ElMessage.info("已经到底了!")
         return 

@@ -37,6 +37,10 @@ const props = defineProps({
     mode:{
         type:String,
         default:'router'
+    },
+    type:{
+        type:String,
+        default:'artist'
     }
 })
 
@@ -44,7 +48,11 @@ const handClick = (id:string|number)=>{
     console.log("handClick",'/artistdetail/'+id)
     console.log("handClick",props.mode)
     if(props.mode=='router'){
-        router.push('/artistdetail/'+id)
+        if(props.type=='artist'){
+            router.push('/artistdetail/'+id)
+        }else{
+            router.push('/userdetail/'+id)
+        }
        
     }
     else emit('handClick',id)

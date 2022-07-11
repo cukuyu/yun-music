@@ -1,7 +1,7 @@
 import {user} from '@/types/person'
 
 export interface commentInfo{
-    id:number, 
+    id:string, 
     type:number,
     pageNo?:number,
     pageSize?:number,
@@ -11,7 +11,7 @@ export interface commentInfo{
 
 
 export interface commentQuery{
-    id:number, 
+    id:string, 
     limit:number, 
     offset:number, 
     before?:number
@@ -37,14 +37,14 @@ export interface commentItem{
 }
 
 export interface likeCommentPar{
-    id:number,
+    id:string,
     commentId:number,
     t:number,
     type:number
 }
 
 export interface sendCommentPar{
-    id:number,
+    id:string,
     content:string,
     t:number,
     type:number,

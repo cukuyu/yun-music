@@ -8,36 +8,53 @@
             <video  controls :src="urlInfo?.url">
                 您的浏览器不支持 video 标签。
             </video>
-            <div class="video-creator">
-                <img :src="videoInfo?.artists[0].img1v1Url" alt="">
-                <Creator v-if="videoInfo?.artists" :creators="videoInfo?.artists"></Creator>
+            <div class="video-creator text-hidden">
+                <img v-if="type=='mv'" :src="mvInfo?.artists[0].img1v1Url" alt="">
+                <img v-if="type=='vi'" :src="videoInfo?.creator.avatarUrl" alt="">
+                <Creator v-if="type=='mv'" :creators="mvInfo?.artists as []"></Creator>
+                <Creator v-if="type=='vi'" 
+                type="user"
+                :creators="[{id:videoInfo?.creator.userId as number, 
+                            name:videoInfo?.creator.nickname as string}]">
+                </Creator>
             </div>
             <div class="mtop-20 font-22 font-bold">
-                <span>{{videoInfo?.name}}</span>
-                <i  
+                <span v-if="type=='mv'">{{mvInfo?.name}}</span>
+                <span v-if="type=='vi'">{{videoInfo?.title}}</span>
+                <i  v-if="type=='mv' && mvInfo?.briefDesc.length!=0"
                 class="iconfont  mleft-10"
                 :class="showDesc?'icon-shouqi':'icon-zhankai'"
                 @click="showDesc = !showDesc">
                 </i>
             </div>
             <div class="mtop-10 font-12 video-time-playcount">
-                <span>发布：{{videoInfo?.publishTime}}</span>
-                <span class="mleft-20">播放：{{format.transNumber(videoInfo?.playCount)}}</span>
+                <span v-if="type=='mv'">发布：{{mvInfo?.publishTime}}</span>
+                <span v-if="type=='vi'">发布：{{format.dateFormat(videoInfo?.publishTime as number)}}</span>
+                <span v-if="type=='mv'" class="mleft-20">播放：{{format.transNumber(mvInfo?.playCount)}}</span>
+                <span v-if="type=='vi'" class="mleft-20">播放：{{format.transNumber(videoInfo?.playTime)}}</span>
             </div>
-            <div 
-            class="video-desc" 
-            v-show="showDesc">
-                {{videoInfo?.desc}}
+            <div v-if="type=='mv'" class="video-desc" v-show="showDesc">
+                {{mvInfo?.desc}}
+            </div>
+            <div v-else class="mtop-10">
+                <button class="btn font-12 cl-bgc tags-item" v-for="item in videoInfo?.videoGroup">
+                    {{item.name}}
+                </button>
             </div>
             <div class="video-comment-btn font-20 mtop-20">
                 <button class="btn-white btn">
                     <LikeButton :liked="videoLikeInfo?.liked"></LikeButton>赞({{videoLikeInfo?.likedCount}})
                 </button>
                 <button class="btn-white btn">
-                    <i class="iconfont icon-shoucang2"></i>收藏({{videoInfo?.subCount}})
+                    <i class="iconfont icon-shoucang2"></i>收藏(
+                        <span  v-if="type=='mv'"> {{mvInfo?.subCount}}</span>
+                        <span  v-else> {{videoInfo?.subscribeCount}}</span>
+                        )
                 </button>
                 <button class="btn-white btn"> 
-                    <i class="iconfont icon-fenxiang"></i>分享({{videoInfo?.shareCount}})
+                    <i class="iconfont icon-fenxiang"></i>分享(  
+                        <span  v-if="type=='mv'"> {{mvInfo?.shareCount}}</span>
+                        <span  v-else> {{videoInfo?.shareCount}}</span>)
                 </button>
                 <button class="btn-white btn"> 
                     <i class="iconfont icon-down"></i>下载
@@ -48,37 +65,66 @@
                 <span class="font-12 gray">({{videoLikeInfo?.commentCount}})</span>
             </div>
             <Comment 
-            :id="parseInt(props.id)"
+            :id="props.id"
             :type="props.type=='vi'?5:1"
             >
             </Comment>
         </div>
         <div class="video-relate">
             <div class="font-20 font-bold mbottom-20">相关推荐</div>
-            <div class="video-relate-item" v-for="item in relates">
-                <div class="img-wrap pointer" @click="toOtherVideoDetail(item.id)">
-                    <img :src="item.picUrl+'?param=140y80'" alt="">
-                    <div class="video-playcount font-12" v-if="item.playCount">
-                        <i class="iconfont icon-24gl-play font-12"></i>
-                        {{format.transNumber(item.playCount)}}
+            <div v-if="type=='mv'">
+                <div class="video-relate-item" v-for="item in mvRelates">
+                    <div class="img-wrap pointer" @click="toOtherVideoDetail(item.id+'')">
+                        <img :src="item.picUrl+'?param=140y80'" alt="">
+                        <div class="video-playcount font-12" v-if="item.playCount">
+                            <i class="iconfont icon-24gl-play font-12"></i>
+                            {{format.transNumber(item.playCount)}}
+                        </div>
+                        <div class="mv-time font-12" >
+                            {{format.timeFormat(item.duration/1000)}}
+                        </div>
                     </div>
-                    <div class="mv-time font-12" >
-                        {{format.timeFormat(item.duration/1000)}}
-                    </div>
-                </div>
-                <div class="video-relate-info">
-                    <div class="video-relate-name pointer" 
-                    @click="toOtherVideoDetail(item.id)">
-                        {{item.name}}
-                    </div>
-                    <div 
-                    class="video-relate-creator pointer"
-                    @click="toCreatorDetail(item.artistId)"
-                    > 
-                        {{'by '+item.artistName}}
+                    <div class="video-relate-info">
+                        <div class="video-relate-name pointer" 
+                        @click="toOtherVideoDetail(item.id+'')">
+                            {{item.name}}
+                        </div>
+                        <div 
+                        class="video-relate-creator pointer"
+                        @click="toCreatorDetail(item.artistId)"
+                        > 
+                            {{'by '+item.artistName}}
+                        </div>
                     </div>
                 </div>
             </div>
+            <div v-else>
+                <div class="video-relate-item" v-for="item in videoRelates">
+                    <div class="img-wrap pointer" @click="toOtherVideoDetail(item.vid)">
+                        <img :src="item.coverUrl+'?param=140y80'" alt="">
+                        <div class="video-playcount font-12" v-if="item.playTime">
+                            <i class="iconfont icon-24gl-play font-12"></i>
+                            {{format.transNumber(item.playTime)}}
+                        </div>
+                        <div class="mv-time font-12" >
+                            {{format.timeFormat(item.durationms/1000)}}
+                        </div>
+                    </div>
+                    <div class="video-relate-info">
+                        <div class="video-relate-name pointer" 
+                        @click="toOtherVideoDetail(item.vid)">
+                            {{item.title}}
+                        </div>
+                        <div 
+                        class="video-relate-creator pointer"
+                        @click="toCreatorDetail(item.creator[0].userId)"
+                        > 
+                            {{'by '+item.creator[0].userName}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
         </div>
     </div>
                         <!-- <label for="check" class="check-in"><i class="iconfont  icon-zhankai"></i></label>
@@ -89,7 +135,7 @@
 <script lang="ts" setup>
 import {getVideoDetail, getVideoUrl, getVideoLike, subVideo, getRelatedVideo} from '@/api/api_video'
 
-import {mvUrl,videoUrl,videoDetail, videoLike, videoRelate} from '@/types/video'
+import {mvUrl, videoUrl, videoDetail, MVDetail, videoLike, videoRelate, mvRelate} from '@/types/video'
 
 import Creator from '@/components/text/Creator.vue';
 import LikeButton from '@/components/button/LikeButton.vue';
@@ -136,20 +182,22 @@ let urlInfo = ref<mvUrl|videoUrl>()
 
 //视频信息
 let videoInfo = ref<videoDetail>()
-
+let mvInfo = ref<MVDetail>()
 //显示简介
 let showDesc = ref(false)
 
 //点赞信息
 let videoLikeInfo = ref<videoLike>()
 
-let relates = ref<videoRelate[]>([])
+let videoRelates = ref<videoRelate[]>([])
+let mvRelates = ref<mvRelate[]>([])
 
 //获得视频信息
 const toVideoDetail = async()=>{
     const res = await getVideoDetail(props.type,props.id)
     if(res.code!=200) return
-    videoInfo.value = res.data
+    if(props.type=='vi')videoInfo.value = res.data
+    else mvInfo.value = res.data
     // console.log("toVideoDetail",res)
 }
 //获取视频url
@@ -157,7 +205,7 @@ const toVideoUrl = async()=>{
     const res = await getVideoUrl(props.type, props.id)
     if(res.code!=200) return
     if(props.type=='vi'){
-        urlInfo.value = res.data
+        urlInfo.value = res.urls[0]
     }else{
         urlInfo.value = res.data
     }
@@ -177,17 +225,26 @@ const toSubVideo =  async() =>{
 const toRelatedVideo = async () => {
     const res = await getRelatedVideo(props.type, props.id)
     if(res.code!=200) return
-    console.log("toRelatedVideo",res)
-    relates.value = res.result
+     if(props.type=='vi'){
+        videoRelates.value = res.data
+    }else{
+        mvRelates.value = res.result
+    }
 }
 
-const toOtherVideoDetail = (id:number)=>{
-   
-    router.push("/videodetail/mv/"+id)
+const toOtherVideoDetail = (id:string)=>{
+    if(props.type=='mv'){
+        router.push("/videodetail/mv/"+id)
+    }else{
+        router.push("/videodetail/vi/"+id)
+    }
+  
 }
 const toCreatorDetail = (id:number)=>{
     if(props.type=='mv'){
         router.push("/artistdetail/"+id)
+    }else{
+        router.push("/userdetail/"+id)
     }
 
 }
@@ -249,6 +306,12 @@ toRelatedVideo()
             text-overflow: ellipsis;
             margin-top: 10px;
         }
+        .tags-item{
+            height: 20px;
+            margin-right: 3px;
+            line-height: 20px;
+        }
+       
         .video-comment-btn{
             button{
                 width: 20%;

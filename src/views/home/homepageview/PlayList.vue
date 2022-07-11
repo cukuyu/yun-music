@@ -291,7 +291,7 @@ getPlayLists()
                 height: 715px;
                 width: 655px;
                 @include get-class-from-key('c-bgc');
-                @include get-var('box-shadow','0 0 8px','cl4-color');
+                @include get-var('box-shadow','0 0 4px','cl3-color');
                 // box-shadow: 0 0 8px #e5e5e5;
                 border-radius: 4px;
                 font-size: 14px;
