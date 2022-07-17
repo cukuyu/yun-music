@@ -39,7 +39,11 @@
                 <!-- <span class="pointer" @click="toArtistDetail(row.ar[0].id)">{{row.ar[0].name}}</span> -->
             </template>
         </el-table-column>
-        <el-table-column prop="al.name" label="专辑" width="300"  show-overflow-tooltip/>
+        <el-table-column prop="al.name" label="专辑" width="300"  show-overflow-tooltip>
+            <template v-slot="{row}">
+                <span class="pointer" @click="toAlbumDetail(row.al.id)">{{row.al.name}}</span>
+            </template>
+        </el-table-column>
         <el-table-column prop="dt" label="时间" width="170">
             <template v-slot="{row}">
             {{format.timeFormat(row.dt/1000)}}

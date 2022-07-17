@@ -3,7 +3,7 @@
        <p  
        v-for="(line, index) in lyricObj?.lines"
         :key="index"
-        class="lyric-lines"
+        class="lyric-lines text-hidden"
         :class="{'active':index==lyricObj?.curren,'normal':index!=lyricObj?.curren}"
        > 
          {{ line?.txt }}
@@ -23,6 +23,14 @@ import {useAnimation} from '@/hooks/animation'
 const animation = useAnimation()
 
 
+const props = defineProps({
+    height:{
+        type:String,
+        default: '400px'
+    }
+})
+
+
 const store = useMainStore()
 let lyricObj = ref<LyricBase>() 
 
@@ -34,9 +42,12 @@ watch(()=> store.currentMusicInfo.currentTime,
     })
 
 watch(()=>store.currentMusicId,(val)=>{
+    if(lyricObj.value || store.playType=='music'){
+        lyricObj.value!.curren = 0
+        lyricRef.value.scrollTop = 0
+    }
     next.value = 0
-    lyricObj.value!.curren = 0
-    lyricRef.value.scrollTop = 0
+   
     getLyricById()
 })
 
@@ -95,9 +106,7 @@ getLyricById()
 .lyric-wrap{
     // width: 600px;
     // position: relative;
-    margin-top: 40px;
-    width: 60%;
-    height: 400px;
+    height: v-bind(height);
     overflow-y: scroll;
     .lyric-lines{
         text-align: center;
@@ -118,11 +127,11 @@ getLyricById()
 .active {
     font-size: 18px;
     font-weight: bold;
-    color: var(--lyric-active-color);
+    @include get-class-from-key('cf-color');
 }
 .normal {
     font-size: 16px;
-    color: var(--lyric-color);
+    @include get-class-from-key('cl-color');
 }
 
 

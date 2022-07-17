@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { getAccount, loginOut, getUserPlayList } from '@/api/api_user'
 import { getLikeIdList } from '@/api/api_music'
 import { user } from '@/types/person'
-import { playList, musicInfo} from '@/types/music'
+import { playList, musicInfo,} from '@/types/music'
 
 
 export const useMainStore = defineStore({
@@ -45,7 +45,9 @@ export const useMainStore = defineStore({
     // 颜色主题
     pureColor: {backgroundColor:"#f5f5f5",color:"#ffffff"},
     //音效
-    audioEffect: ''
+    audioEffect: '',
+    //fm next
+    fmNext: false
 
   }),
   actions: {
@@ -104,11 +106,17 @@ export const useMainStore = defineStore({
     },
 
     playMusic(payLoad:{list:musicInfo[],id:number}){
-      this.musicList = payLoad.list
+      this.playType = 'music'
+      this.musicList = payLoad.list 
       this.currentMusicId = payLoad.id
       this.currentIndex = payLoad.list.findIndex((item:any)=>item.id==payLoad.id)
-      this.playType = 'music'
       this.play=true
+    },
+    playFmMusic(payLoad:{list:musicInfo[]}){
+      this.playType = 'fm'
+      this.musicList = payLoad.list 
+      this.currentMusicId = payLoad.list[0].id 
+      this.currentIndex = 0
     }
   },
 })

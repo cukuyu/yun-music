@@ -121,8 +121,8 @@ export interface videoQuery{
     area:string|number, 
     limit:number, 
     offset:number,
-    order:number,
-    type:number
+    order:string,
+    type:string
 }
 
 export interface mvQuery{

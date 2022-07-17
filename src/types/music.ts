@@ -1,4 +1,4 @@
-import {user,singer} from '@/types/person'
+import {user,singer, artist} from '@/types/person'
 import {album} from '@/types/album'
 
 export interface musicListInfo{
@@ -29,6 +29,8 @@ export interface musicInfo{
     fee:number,
     [key: string]: any
 }
+
+
 
 export interface playList extends musicListInfo{
     path:string,

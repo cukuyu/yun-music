@@ -22,7 +22,9 @@
                 </div>
             </div>
         </div>
+        <div class="lyric-detail">
         <Lyric></Lyric>
+        </div>
         <div class="relation-info"></div>
     </div>
 
@@ -102,6 +104,10 @@ const props = defineProps({
         
     }
 
+    .lyric-detail{
+        width: 60%;
+        margin-top: 20px;
+    }
     .relation-info{
         min-width: 20%;
     }

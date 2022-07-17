@@ -8,7 +8,7 @@
                 <Comment  
                 :scrollDom="'.drawer-view'"
                 :type="0" 
-                :id="store.currentMusicId"
+                :id="store.currentMusicId+''"
                 :defaultEdit="true"
                 ref="commentRef">
                 </Comment>

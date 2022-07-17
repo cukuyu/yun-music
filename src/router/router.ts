@@ -22,6 +22,8 @@ const VideoView = () => import('@/views/video/VideoView.vue')
 const VideoDetail = () => import('@/views/video/VideoDetail.vue')
 const VideoList = () => import('@/views/video/VideoView/VideoPage.vue')
 const MVList = () => import('@/views/video/VideoView/MVPage.vue')
+const AllMv = () => import('@/views/video/VideoView/AllMvPage.vue')
+const TopMv = () => import('@/views/video/VideoView/TopMvPage.vue')
 
 
 const routes: RouteRecordRaw[] = [
@@ -50,9 +52,11 @@ const routes: RouteRecordRaw[] = [
         redirect: '/video',
         children: [
           { path: '/video', component: VideoList },
-          { path: '/mv', component: MVList }
+          { path: '/mv', component: MVList },
         ]
       },
+      { path: '/allmv/', component: AllMv },
+      { path: '/topmv', component: TopMv },
       { path: '/playlistdetail/:id', props: true, component: PlayListDetail, meta: { title: "歌单" } },
       { path: '/userdetail/:uid', props: true, component: UserDetail, meta: { title: "用户详情" } },
       { path: '/artistdetail/:id', props: true, component: ArtistDetail, meta: { title: "歌手详情" } },

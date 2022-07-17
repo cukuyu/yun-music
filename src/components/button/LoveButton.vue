@@ -16,7 +16,6 @@ const store = useMainStore()
 const props = defineProps({
     id:{
         type:Number,
-        required:true
     },
 })
 

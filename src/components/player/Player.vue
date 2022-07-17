@@ -82,7 +82,7 @@
                 <div class="listen-togather">
                     <i class="iconfont  icon-yiqipindan  pointer font-24"></i>
                 </div>
-                <div class="curren-list" @click="drawer=!drawer">
+                <div v-show="store.playType=='music'" class="curren-list" @click="drawer=!drawer">
                     <i class="iconfont  icon-liebiaoshunxu  pointer font-24"></i>
                 </div>
             </div>
@@ -95,7 +95,8 @@
         </audio>
         <div 
         v-show="drawer" 
-        ref="drawerBarRef">
+        ref="drawerBarRef"
+        v-if="store.playType=='music'">
             <DrawerBar  @changIndex="nextMusic"></DrawerBar>
         </div>
         
@@ -128,7 +129,7 @@ const store = useMainStore()
 let musicUrl = ref("")
 
 let imgInfo = reactive({
-    imgUrl: 'https://cdn.jsdelivr.net/gh/crazybox521/blogImg/music.jpg',
+    imgUrl: '',
     name:"未知名歌",
     author:"未知名歌手"
 })
@@ -146,7 +147,9 @@ let currenPercent = ref(0)
 let currentMusicId = computed(()=>store.currentMusicId)
 
 let currentIndex= computed(()=>store.currentIndex)
-let musicList = computed(()=> store.musicList)
+let musicList = computed(()=> {
+    return store.musicList
+})
 let currentMusicInfo = computed(()=> {
     return store.currentMusicInfo
 })
@@ -260,29 +263,39 @@ const mute = ()=>{
     }
 }
 const nextMusic = (val:number)=>{
-    let nextIndex = (currentIndex.value+val+musicList.value.length) % (musicList.value.length)
-    store.currentMusicId = musicList.value[nextIndex].id
-    store.currentIndex = nextIndex
-
-    //设置drawerView的背景颜色变化
-    if(store.drawerView && window.document.documentElement.getAttribute("data-theme")!="drak"){
-        let rgb = []
-        for(let i=0;i<3;i++){
-            rgb.push(Math.floor(Math.random()*60)+170)
+    if(store.playType=='fm'){
+        let nextIndex = currentIndex.value+val
+        if(nextIndex==3){
+            store.fmNext = true
+        }else{
+            store.currentMusicId = musicList.value[nextIndex].id
+            store.currentIndex = nextIndex
         }
-        document.body.style.setProperty('--draw-bg', `linear-gradient(rgb(${rgb[0]},${rgb[1]},${rgb[2]}) 0%, #FFF 40%) fixed`)
+    }else{
+        let nextIndex = (currentIndex.value+val+musicList.value.length) % (musicList.value.length)
+        store.currentMusicId = musicList.value[nextIndex].id
+        store.currentIndex = nextIndex
+
+        //设置drawerView的背景颜色变化
+        if(store.drawerView && window.document.documentElement.getAttribute("data-theme")!="drak"){
+            let rgb = []
+            for(let i=0;i<3;i++){
+                rgb.push(Math.floor(Math.random()*60)+170)
+            }
+            document.body.style.setProperty('--draw-bg', `linear-gradient(rgb(${rgb[0]},${rgb[1]},${rgb[2]}) 0%, #FFF 40%) fixed`)
+        }
     }
-   
+    musicUrl.value = ""
+    currentMusicInfo.value.currentTime = 0.
+    store.currentMusicInfo.currentTime = 0.
 }
 
 
-// const canPlayEnd =  ()=>{
-//     console.log("true")
-// }
 
 
 //设置drawerView的主题
 const changeDrawerView = ()=>{
+    if(store.playType!='music') return
     store.drawerView = !store.drawerView
     if(store.drawerView){
         if(window.document.documentElement.getAttribute("data-theme")!="drak"){

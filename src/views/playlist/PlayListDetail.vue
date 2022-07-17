@@ -89,7 +89,8 @@
             </div>
             <!-- 歌曲列表 -->
             <div class="detail-head">
-              <TabMenu :menuList="[{name:'歌曲列表'}, {name:`评论(${info?.commentCount})`},{name:'收藏者'}]" @menuClick="handMenuClick" mode="menu">
+              <TabMenu :menuList="[{name:'歌曲列表'}, {name:`评论(${info?.commentCount})`},{name:'收藏者'}]" 
+              @menuClick="handMenuClick" mode="menu">
               </TabMenu>
               <div class="detail-search mright-30">
                 <el-input
@@ -102,8 +103,11 @@
                 </el-input>
               </div>
             </div>
-            <div class="music">
+            <div class="music" v-if="tableIndex==0">
               <MusicList ref="listRef" :list="list"></MusicList>
+            </div>
+            <div class="comment" v-if="tableIndex==1">
+              <Comment :type="2" :id="id"></Comment>
             </div>
 
           </div>
@@ -114,25 +118,34 @@
 
 
 <script lang='ts' setup>
+
+import {getPlayListDetail, getSuberList, setPlaylistSub} from '@/api/api_playlist'
+import {musicListInfo,musicInfo} from '@/types/music'
+
+
+import { ref, reactive, defineProps,computed } from 'vue';
+
+
 import Tag from '@/components/text/Tag.vue'
 import TabMenu from '@/components/menu/TabMenu.vue'
 import MusicList from '@/components/list/MusicList.vue'
+import Comment from '@/components/comment/Comment.vue';
 
-import {getPlayListDetail, getSuberList, setPlaylistSub} from '@/api/api_playlist'
-import useFormat from '@/hooks/format'
 
-import { ref, reactive, defineProps,computed } from 'vue';
 import { useRouter, onBeforeRouteUpdate } from 'vue-router';
+import useFormat from '@/hooks/format'
 import {useMainStore} from '@/store/index'
-import {musicListInfo,musicInfo} from '@/types/music'
 
 const format = useFormat()
 const router = useRouter()
 const store = useMainStore()
 
+
+
 onBeforeRouteUpdate( async(to) => {
     getPlayList(to.fullPath.split("/").slice(-1)[0])
 });
+
 
 const props = defineProps({
   id:{
@@ -146,6 +159,8 @@ let loading = ref(false)
 
 let info =  ref<musicListInfo>({} as musicListInfo)
 let playlist = ref<musicInfo[]>([])
+
+//搜索关键词
 let key = ref("")
 let list = computed(()=>{
   let reg = new RegExp(key.value.trim(),'ig')
@@ -171,7 +186,10 @@ const getPlayList = async(id:string)=>{
 
 getPlayList(props.id)
 
-const handMenuClick = async()=>{
+let tableIndex = ref(0) 
+
+const handMenuClick = async(index:number)=>{
+  tableIndex.value = index
 }
 
 
@@ -210,14 +228,14 @@ const toUserDetail = (id:number)=>{
   display: flex;
 }
 
-.detail-desc-info{
-  flex-grow: 1;
-  div{
-  // width: 100% 不知道为什么会出错
-  // width: 100%;
-  
-  margin-bottom: 5px;
-}
+  .detail-desc-info{
+    flex-grow: 1;
+    div{
+    // width: 100% 不知道为什么会出错
+    // width: 100%;
+    
+      margin-bottom: 5px;
+    }
 }
 
 // .detail-desc-info 
@@ -295,6 +313,10 @@ input[type='checkbox'] {
     filter: brightness(90%);
     background-color: #ec4141;
   }
+}
+
+.comment{
+  margin: 0 30px;
 }
 
 </style>

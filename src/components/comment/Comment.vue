@@ -79,7 +79,7 @@ const props = defineProps({
     },
     id:{
         type: String,
-        default:0
+        default:"0"
     },
     scrollDom:{
         type: String,
@@ -202,7 +202,8 @@ const editComment = (name:string,t:number,commentId:number=0)=>{
     showEditComment()
     
 }
-  
+
+//是否显示编辑评论
 const showEditComment = ()=>{
     editVisiable.value = !editVisiable.value
 }

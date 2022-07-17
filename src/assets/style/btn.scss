@@ -53,3 +53,9 @@ button {
     border-radius: 15px;
 }
 
+.red-btn {
+    @include get-raga('active-bgc',0.05);
+    @include get-var('color','','active-bgc');
+    border-radius: 13px;
+}
+
