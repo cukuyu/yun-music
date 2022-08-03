@@ -10,8 +10,21 @@
         </TabMenu>
         <!-- 主题 -->
         <div class="theme-skins" v-show="menuIndex==0">
-            <button @click="changeTheme('drak')">dark</button>
-            <button @click="changeTheme('red')">red</button>
+            <div class="theme-skins-color mright-5" @click="changeTheme('dark')">
+                <img src="@/assets/img/skin-dark.jpeg" alt="">
+                <div class="skin-check-icon" v-if="themeSkin=='dark'">
+                    
+                    <el-icon><check/></el-icon>
+                </div>
+            </div>
+            <div class="theme-skins-color mright-10" @click="changeTheme('red')">
+                <img src="@/assets/img/skin-red.jpeg" alt="">
+                <div class="skin-check-icon" v-if="themeSkin=='red'">  
+                    <el-icon><check/></el-icon>
+                </div>
+            </div>
+           
+
         </div>
         <!-- 纯色 -->
         <div class="pure-color" v-show="menuIndex==1">
@@ -21,7 +34,6 @@
             @click="changePureColor(item)"
             v-for="item in pureColors">
             </div>
-            <div class="pure-color-item"></div>
         </div>
     </div>
 </template>
@@ -34,6 +46,9 @@ import TabMenu from '@/components/menu/TabMenu.vue';
 const store = useMainStore()
 // const pureColors = [{backgroundColor:'#FFFFFF',color:"a"},'#ff5c8a', '#ff7a9e','#717ff9','#4791eb','#39afea',
 //                     '#2bb669','#6acc19', '#e2ab12', '#ff8f57', '#fd726d', '#fd544e']
+
+const themeSkin = ref(window.document.documentElement.getAttribute("data-theme"))
+
 
 const pureColors = [
     {backgroundColor:'#f5f5f5',color:"#313131"},
@@ -55,6 +70,7 @@ const handClick = (index:number, )=>{
     menuIndex.value = index
 }
 const changeTheme = (color:string)=>{
+    themeSkin.value = color
     window.document.documentElement.setAttribute('data-theme',color)
 }
 
@@ -79,10 +95,40 @@ const changePureColor = (item:{backgroundColor:string, color:string} )=>{
     height: 275px;
     width: 335px;
     transform: translate(-40%);
-    color: #000;
-    background-color:#FFF;
+    padding: 0 10px;
+    @include get-class-from-key('c-bgc');
+    @include get-class-from-key('c-color');
     border-radius: 1%;
-    box-shadow: 0px 0px 10px #ccc;
+    @include get-var('box-shadow','0px 0px 4px','cl-color');
+
+    .theme-skins{
+        display: flex;
+        flex-wrap: wrap;
+        
+        .theme-skins-color{
+            position: relative;
+            margin-left: 10px;
+            .skin-check-icon{
+                position: absolute;
+                bottom: 5px;   
+                right: 5px;             
+                height: 20px;
+                width: 20px;
+                color: #fff;
+                background-color:#ec4141;
+                line-height: 20px;
+                text-align: center;
+                border-radius: 50%;
+                
+            }
+            img{
+            width: 80px;
+            height: 80px;
+            border-radius: 5%;
+            }
+        }
+        
+    }
 
     .pure-color{
         display: flex;

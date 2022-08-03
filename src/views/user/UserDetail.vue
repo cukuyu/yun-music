@@ -65,13 +65,14 @@
             :list="songlist" 
             type="playlist"
             class="img-list"
+            :empty="isEmpty?.value"
             >
             <template v-slot="{item}">
                 <div class="text-hidden font-14">
                     {{item.name}}
                 </div>
             </template>
-        </ImgList>
+            </ImgList>
         </div>
     </div>
 </template>
@@ -81,7 +82,7 @@
 import { userDetail } from '@/types/person'
 import {imgList} from '@/types/imgList'
 import { doUserDetail,getUserPlayList } from '@/api/api_user'
-import { ref, reactive, computed,watch } from 'vue';
+import { ref, reactive, computed,watch,  } from 'vue';
 import { useMainStore } from '@/store'
 import { ElMessage } from 'element-plus';
 import TabMenu from '@/components/menu/TabMenu.vue'
@@ -110,21 +111,26 @@ let vipLevel = computed(() => {
     return "vip-" + (store.profile.vipType - 6)
 })
 
-let curIndex = ref(-1)
 let creList = ref<imgList[]>([])
 let subList = ref<imgList[]>([])
-let songlist = ref<imgList[]>([])
+let songlist = ref<imgList[]|undefined>([])
 
-watch(()=>curIndex.value, (val)=>{
-    if(val==0){
-        songlist.value = creList.value
-    }else if(val==1){
-        songlist.value = subList.value
-    }
+//创建的歌单为空
+let creEmpty = ref(false)
+//收藏的歌单为空
+let subEmpty = ref(false)
+
+let tabIndex = ref(0)
+
+
+let isEmpty = computed(()=>{
+    if(tabIndex.value == 0) return creEmpty
+    if(tabIndex.value == 1 ) return subEmpty
 })
 
 const getuserDetail = async (uid: number) => {
-    const res1 = await doUserDetail(uid)
+    let resAll = [doUserDetail(uid), getUserPlayList(uid)]
+    let [res1, res2] =  await Promise.all(resAll)
     if (res1.code != 200) {
         ElMessage.error("获取用户信息失败")
         return 
@@ -132,14 +138,10 @@ const getuserDetail = async (uid: number) => {
     profile.value = res1.profile
     profile.value!.listenSongs = res1.listenSongs
     profile.value!.level = res1.level
-    curIndex.value=-1
-    const res2 = await getUserPlayList(uid)
     if(res2.code !=200){{
         ElMessage.error("获取用户信息失败")
         return 
     }}
-    creList.value.length = 0
-    subList.value.length = 0
     console.log("res2.playlist",res2.playlist)
     for(let list of res2.playlist){
         if(list.userId == uid){
@@ -148,8 +150,8 @@ const getuserDetail = async (uid: number) => {
             subList.value?.push(list)
         }
     }
-    console.log("creList.value",creList.value)
-    console.log("subList",subList.value)
+    if(creList.value.length==0) creEmpty.value = true
+    if(subList.value.length==0) subEmpty.value = true
     songlist.value = creList.value
 }
 
@@ -160,8 +162,15 @@ const toPlayListDetail = (id: number|string)=>{
     }
 }
 const handMenuClick = (index:number)=>{
-    curIndex.value = index
+    tabIndex.value = index
+    if(index==0){
+        songlist.value = creList.value
+    }else if(index==1){
+        songlist.value = subList.value
+    }
 }
+
+
 
 
 getuserDetail(parseInt(props.uid))

@@ -130,7 +130,6 @@ let loading = ref(false)
 //加载歌单信息
 const toAlbumDetail= async(id:string)=>{
   const res = await getAlbumDetail(id)
-  console.log("专辑信息",res)
   if(res.code!=200) return
     albumDetail.value = {album:res.album,songs:res.songs}
 }
@@ -147,19 +146,6 @@ const toArtistDetail = (id:number)=>{
 }
 
 
-// 使用reactive直接重新赋值不会响应， 可以遍历对象属性赋值
-// info = Object.freeze(res.playlist)
-// if(!info.id) info = res.playlist
-// else {
-//   for(let keys  of Object.keys(info)){
-//     info[keys] = Object.freeze(res.playlist[keys])
-//   }
-// }
-// if(playlist.length==0) playlist = res.playlist.tracks
-// for(let keys in playlist){
-//   console.log()
-//   playlist[keys] = Object.freeze(res.playlist.tracks[keys])
-// }
 </script>
 
 

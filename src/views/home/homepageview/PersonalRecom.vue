@@ -1,6 +1,6 @@
 <template>
     <div class="personal-recome mtop-60">
-        <div class="swiper-wraper">
+        <div class="swiper-wraper" v-loading="!bannerList">
             <el-carousel :interval="4000" type="card" height="200px">
                 <el-carousel-item v-for="item in bannerList" :key="item">
                     <img :src="item.imageUrl" alt="">
@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import {getBanner,} from '@/api/api_other'
 import {getRecommend, getPersonalized,} from '@/api/api_playlist'
-import {computed, reactive, ref} from 'vue'
+import {shallowRef, watch} from 'vue'
 import ImgList from '@/components/list/ImgList.vue'
 import { useRouter } from 'vue-router';
 import {useMainStore} from '@/store/index'
@@ -40,9 +40,8 @@ const format = useFormat()
 const router = useRouter()
 const store = useMainStore()
 
-let bannerList = ref<banner[]>([])
-let login = computed(()=> store.login)
-let recSongList = ref<[]>([])
+let bannerList = shallowRef<banner[]>()
+let recSongList = shallowRef<[]>()
 const limit = 30
 
 
@@ -57,15 +56,20 @@ const toPlayListDetail = (id: number|string)=>{
 }
 // bannerList = await getBanner().then((res)=>res.banners)
 
-const getBannerList = ()=>{
-    getBanner().then((res)=>{
-         if(res.code==200) bannerList.value = res.banners
-    })
+const getBannerList = async ()=>{
+    bannerList.value = undefined
+    const res = await getBanner()
+    if(res.code!=200) return
+    bannerList.value = res.banners
 }
 
 
 
-const getRecSongList = ()=>{
+const getRecSongList = async()=>{
+    if(!store.login) return
+    recSongList.value = []
+    const res = await getRecommend()
+    if(res.code!=200) return 
         getRecommend().then((res)=>{
             if(res.code==200){
                 recSongList.value = res.recommend
@@ -73,17 +77,24 @@ const getRecSongList = ()=>{
         })
 }
 const getPersonal = async ()=>{
-    if(login.value) return
+    if(store.login) return
+    recSongList.value = []
     const res  = await getPersonalized(limit)
     if(res.code===200){
-        recSongList = Object.freeze(res.result)
+        recSongList.value = res.result
     }else return
 }
+
+watch(()=>store.login,(newVal)=>{
+    if(newVal){
+        getRecSongList()
+    }else{
+        getPersonal()
+    }
+})
 getBannerList()
 getRecSongList()
-
-// getRecSongList()
-// getPersonal()
+getPersonal()
 </script>
 
 <style lang="less" scoped>

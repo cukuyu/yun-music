@@ -40,13 +40,17 @@
             <div class='avatar-wrap  pointer' @click="loginView">
                 <el-avatar :size="30" :src="circleUrl"></el-avatar>
             </div>
-            <div class="login-info mleft-12 font-12">
+            <div class="login-info mleft-12 font-12" @click="getAccountInfo">
                 {{name}}
                 <div
                 class="vip-level"
                 :class="vipLevel"
                 ></div>
                 <i class="iconfont icon-bottom-triangle"></i>
+                <div v-if="accountInfoView"  ref="accountRef">
+                    <div v-if="store.login"><AccountInfo/></div>
+                    <div v-else><AccountInfo/></div>
+                </div>
             </div> 
             <div class="trans-skin mleft-10">
                 <i class="iconfont icon-skin font-20 pointer" @click="themeSkinView = !themeSkinView">
@@ -84,10 +88,15 @@
 
 <script lang="ts" setup>
 import {ref, computed, watch} from 'vue'
+
+
+
+import ThemeSkin from './headerBar/ThemeSkin.vue';
+import AccountInfo from './headerBar/AccountInfo.vue';
+
+import { useAnimation } from '@/hooks/animation';
 import {useRouter} from 'vue-router'
 import { useMainStore } from '@/store';
-import ThemeSkin from './headerBar/ThemeSkin.vue';
-import { useAnimation } from '@/hooks/animation';
 
 const router = useRouter()
 const store = useMainStore()
@@ -117,7 +126,11 @@ window.document.documentElement.setAttribute('data-theme','red')
 
 
 let vipLevel = computed(()=>{
-    return "vip-"+(store.profile.vipType-6)
+    if(store.login && store.profile){
+        return "vip-"+(store.profile.vipType-6)
+    }else{
+        return "vip-1-1"
+    }
 })
 
 
@@ -125,7 +138,7 @@ const loginView = ()=>{
     if(store.login){
         router.push({path : '/userdetail/' + store.profile.userId})
     }else{
-        router.push('/login')
+        store.loginView = true
     }
 }
 
@@ -133,9 +146,20 @@ const loginView = ()=>{
 let themeRef = ref()
 let themeSkinView = animation.clickHidden(themeRef)
 
+let accountRef = ref()
+let accountInfoView =  animation.clickHidden(accountRef)
 
 const toHome = ()=>{
     router.push('/personalrecom')
+}
+
+const getAccountInfo = ()=>{
+    if(store.login){
+        accountInfoView!.value = !accountInfoView!.value
+    }else{
+        store.loginView = !store.loginView
+    }
+    
 }
 
 </script>
@@ -213,6 +237,7 @@ const toHome = ()=>{
 }
 
 .login-info {
+    position: relative;
     display: flex;
     align-items: center;
     .icon-vip{

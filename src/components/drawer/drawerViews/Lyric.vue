@@ -1,5 +1,5 @@
 <template>
-    <div class="lyric-wrap" ref="lyricRef">
+    <div class="lyric-wrap" ref="lyricRef" v-loading="lyricLoading">
        <p  
        v-for="(line, index) in lyricObj?.lines"
         :key="index"
@@ -36,6 +36,8 @@ let lyricObj = ref<LyricBase>()
 
 let lyricRef = ref()
 let next = ref(0)
+
+let lyricLoading = ref(false)
 watch(()=> store.currentMusicInfo.currentTime,
     (val,old)=>{
         srollLyric(val,old)
@@ -52,10 +54,11 @@ watch(()=>store.currentMusicId,(val)=>{
 })
 
 const getLyricById = async ()=>{
+    lyricLoading.value  = true
     const res = await getLyric(store.currentMusicId)
     if(res.code!=200) return
-    lyricObj.value = useLyric(res.lrc.lyric).value
-
+    lyricObj.value = useLyric(res.lrc.lyric)
+    lyricLoading.value  = false
     //初始化滑动
     if(store.currentMusicInfo.currentTime!=0){
         srollLyric(store.currentMusicInfo.currentTime,-1)

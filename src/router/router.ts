@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw, createWebHashHistory } from 'vue-router'
 
 
-const Login = () => import('@/views/Login.vue')
 const Layout = () => import('@/views/LayOut.vue')
 
 
@@ -65,7 +64,6 @@ const routes: RouteRecordRaw[] = [
       { path: '/personalfm/', component: PersonalFM, meta: { title: "私人FM" } },
     ]
   },
-  { path: '/login', component: Login, },
 
 ]
 

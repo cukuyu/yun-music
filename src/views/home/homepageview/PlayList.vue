@@ -1,6 +1,6 @@
 <template>
     <div class="play-list mtop-60">
-        <div class="banner" v-if="hasHighInfo">
+        <div class="banner" v-loading="!hasHighInfo">
             <img class="bag-img" :src="highInfos?.coverImgUrl">
             <img class="high-img" :src="highInfos?.coverImgUrl">
             <div class="info-wrapper">
@@ -85,7 +85,7 @@
 <script lang="ts" setup>
 import { getAllCat, getHotCat, getHighquality, getPlayListByCat } from '@/api/api_playlist'
 import { catQuery, highInfo } from '@/types/playList'
-import { ref, reactive, Ref} from 'vue'
+import { ref, reactive, shallowRef} from 'vue'
 import { imgList } from '@/types/imgList'
 import ImgList from '@/components/list/ImgList.vue'
 import { useRouter } from 'vue-router'
@@ -114,9 +114,9 @@ let tagBtn = ref('华语')
 // let showLayer = ref(false)
 
 let hotcats = reactive<string[]>([])
-let allcats = ref<string[][]>()
+let allcats = shallowRef<string[][]>()
 
-let playList = ref<imgList[]>()
+let playList = shallowRef<imgList[]>([])
 
 let layerRef = ref()
 
@@ -162,6 +162,7 @@ const getHighInfo = async (cat: string) => {
 }
 
 const getPlayLists = async () => {
+    playList.value = []
     const res = await getPlayListByCat(queryInfo)
     if (res.code != 200) return
     playList.value = res.playlists
@@ -184,27 +185,6 @@ const toPlayListDetail = (id: number | string) => {
     }
 }
 
-// const openLayer = ()=>{
-//     if(showLayer.value==true){
-//         showLayer.value = false
-//         return
-//     }
-//     showLayer.value = true
-//     setTimeout(() => {
-//         window.addEventListener('click', closeLayer)
-//     }, 10)
-// }
-
-// const closeLayer = (e:Event)=>{
-//     if(!layerRef.value) return
-//     if(!layerRef.value.contains(e.target)){
-//         showLayer.value = false
-//     }
-// }
-
-// watch(()=>showLayer.value,()=>{
-//     window.removeEventListener('click',closeLayer)
-// })
 
 const changeCatByLayer = (name:string)=>{
     showLayer!.value = false

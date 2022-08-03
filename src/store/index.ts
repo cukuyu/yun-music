@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getAccount, loginOut, getUserPlayList } from '@/api/api_user'
+import { getAccount, dologinOut, getUserPlayList } from '@/api/api_user'
 import { getLikeIdList } from '@/api/api_music'
 import { user } from '@/types/person'
 import { playList, musicInfo,} from '@/types/music'
@@ -28,6 +28,8 @@ export const useMainStore = defineStore({
     clientHeight: 969,
     //登入状态
     login : window.sessionStorage.getItem('isLogin') !== 'true' ? false : true,
+    //登录页面是否显示
+    loginView: false,
     //账号信息
     account: {} as any,
     // 用户信息
@@ -47,7 +49,9 @@ export const useMainStore = defineStore({
     //音效
     audioEffect: '',
     //fm next
-    fmNext: false
+    fmNext: false,
+
+
 
   }),
   actions: {
@@ -70,18 +74,29 @@ export const useMainStore = defineStore({
       }
     },
 
+    async loginOut(){
+      console.log("login",this.login)
+      const res = await dologinOut()
+      if(res.code!=200){
+
+      }else{
+        window.location.reload()
+      }
+    },
+
     async getAcount(){
-      getAccount().then((res)=>{
-        if(res.code!=200) return
-        else if(res.account!=null){
-          this.setLogin(true)
-          this.setLoginInfo(res.account,res.profile)
-          this.getLikeList()
-          this.getMyPlayList()
-        } else {
-          this.setLogin(false)
-        }
-      })
+      const res = await getAccount()
+      if(res.code!=200) return false
+      else if(res.account!=null){
+        this.setLogin(true)
+        this.setLoginInfo(res.account,res.profile)
+        this.getLikeList()
+        this.getMyPlayList()
+        return true
+      } else {
+        this.setLogin(false)
+        return false
+      }
     },
     async getLikeList(){
       if (!this.login) return

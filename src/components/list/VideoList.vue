@@ -1,5 +1,5 @@
 <template>
-<div class="video-info">
+<div class="video-info" v-loading="!props.list || list?.length==0">
     <ul v-if="type=='vi'" class="video-list-info" v-infinite-scroll="load" :infinite-scroll-disabled="!hasMore"
         infinite-scroll-delay="300">
         <li v-for="item in videos" class="video-list-item">
@@ -123,6 +123,10 @@ const toVideoDetail = (id:string|number)=>{
 
 <style lang="scss" scoped>
 
+
+.video-info{
+    min-height: 400px;
+}
 .video-list-info{
         display: flex;
         align-items: center;

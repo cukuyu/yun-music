@@ -61,6 +61,7 @@
                         trigger="hover"
                         :width="6"
                         popper-style="min-width:0"
+                        :show-arrow=false
                     >
                         <template #reference>
                             <i class="iconfont pointer font-24"
@@ -235,9 +236,12 @@ const getTolaltime = ()=> {
 
 
 const updateCurrenTime = ()=>{
-    let curTime = audioRef.value.currentTime
+    let curTime = 0
+    if(audioRef.value){
+        curTime = audioRef.value.currentTime
+    }
     curTime = Math.floor(curTime)
-    if(curTime != currentTime){
+    if(curTime != currentTime.value){
         store.currentMusicInfo.currentTime = curTime
         currenPercent.value = Math.floor((curTime*100000)/currentMusicInfo.value.totalTime)
     }
@@ -245,12 +249,16 @@ const updateCurrenTime = ()=>{
 
 const changeCurrenTime = (time:number)=>{
     let cur = time/100 * currentMusicInfo.value.totalTime /1000;
-    audioRef.value.currentTime = cur
+    if(audioRef.value){
+        audioRef.value.currentTime = cur
+    }
 }
 
 
 const changeVolume = (val:number)=>{
-    audioRef.value.volume = val/100
+    if(audioRef.value){
+        audioRef.value.volume = val/100
+    }
 }
 
 //静音
@@ -277,7 +285,7 @@ const nextMusic = (val:number)=>{
         store.currentIndex = nextIndex
 
         //设置drawerView的背景颜色变化
-        if(store.drawerView && window.document.documentElement.getAttribute("data-theme")!="drak"){
+        if(store.drawerView && window.document.documentElement.getAttribute("data-theme")!="dark"){
             let rgb = []
             for(let i=0;i<3;i++){
                 rgb.push(Math.floor(Math.random()*60)+170)
@@ -298,7 +306,7 @@ const changeDrawerView = ()=>{
     if(store.playType!='music') return
     store.drawerView = !store.drawerView
     if(store.drawerView){
-        if(window.document.documentElement.getAttribute("data-theme")!="drak"){
+        if(window.document.documentElement.getAttribute("data-theme")!="dark"){
                 document.body.style.setProperty('--draw-bg', 'linear-gradient(#e7e7e7 0%, #FFF 40%) fixed')
                 document.body.style.setProperty('--draw-h-color', '#7a7a7a')
                 document.body.style.setProperty('--draw-bright', 'brightness(95%)')
@@ -306,14 +314,14 @@ const changeDrawerView = ()=>{
                 document.body.style.setProperty('--lyric-color', '#666666')
                 document.body.style.setProperty('--lyric-active-color', '#000000')
                 document.body.style.setProperty('--draw-comment-button-bgc', '#f1f1f1')
-            }else{
-                document.body.style.setProperty('--draw-bg', 'linear-gradient(#2c2c2c 0%, #2b2b2b 40%) fixed')
-                document.body.style.setProperty('--draw-h-color', '#808080')
-                document.body.style.setProperty('--draw-bright', 'brightness(120%)')
-                document.body.style.setProperty('--draw-record-bgc', '#353535')
-                document.body.style.setProperty('--lyric-color', '#696969')
-                document.body.style.setProperty('--lyric-active-color', '#ffffff')
-                document.body.style.setProperty('--draw-comment-button-bgc', '#3e3e3e')
+        }else{
+            document.body.style.setProperty('--draw-bg', 'linear-gradient(#2c2c2c 0%, #2b2b2b 40%) fixed')
+            document.body.style.setProperty('--draw-h-color', '#808080')
+            document.body.style.setProperty('--draw-bright', 'brightness(120%)')
+            document.body.style.setProperty('--draw-record-bgc', '#353535')
+            document.body.style.setProperty('--lyric-color', '#696969')
+            document.body.style.setProperty('--lyric-active-color', '#ffffff')
+            document.body.style.setProperty('--draw-comment-button-bgc', '#3e3e3e')
         }
     }
 }

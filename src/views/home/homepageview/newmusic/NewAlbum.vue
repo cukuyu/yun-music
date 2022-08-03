@@ -8,8 +8,7 @@
                 </li>
             </ul>
         </div>
-        <el-skeleton v-show="!loading" :rows="6" animated />
-        <div class="new-album-view" v-show="loading">
+        <div class="new-album-view">
             <div class="week-span"></div>
             <ImgList :list="weekList" type="album">
                 <template v-slot="{ item }">
@@ -31,31 +30,33 @@
 import { topAlbumQuery } from '@/types/album'
 import { imgList } from '@/types/imgList'
 import { getTopAlbum } from '@/api/api_album'
-import { reactive, ref } from 'vue';
+import { reactive, ref, shallowRef } from 'vue';
 import ImgList from '@/components/list/ImgList.vue';
 
 let allTypes = [{ name: "全部", id: "ALL" }, { name: "华语", id: "ZH" },
 { name: "欧美", id: "EA" }, { name: "韩国", id: "KR" }, { name: "日本", id: "JP" }]
 
 let queryInfo = reactive<topAlbumQuery>({
-    limit: 30,
-    offset: 0,
+    limit: 10,
+    offset: 1200,
     area: 'ALL',
     type: 'new',
-    month: '',
-    year: ''
+    month: '' ,
+    year: '',
 })
 
-let weekList = ref<imgList[]>()
 
-let loading = ref(true)
+let weekList = shallowRef<imgList[]>()
+
+let loading = ref(false)
 
 const getNewAlbum = async () => {
-    loading.value = false
+    console.log("queryInfo",queryInfo)
+    loading.value = true
     const res = await getTopAlbum(queryInfo)
     console.log("getNewAlbum",res)
     if (res.code != 200) {
-        loading.value = true
+        loading.value = false
         return 
     }
     if(queryInfo.area=='ALL'){
@@ -63,12 +64,14 @@ const getNewAlbum = async () => {
     }else{
       weekList.value = res.monthData  
     }
-    loading.value = true
+    loading.value = false
 }
 
 
 const changeType = (id: string) => {
     queryInfo.area = id
+    queryInfo.offset = 0
+    weekList.value = []
     getNewAlbum()
 }
 getNewAlbum()

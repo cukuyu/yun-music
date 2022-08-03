@@ -58,16 +58,28 @@ import {ref} from 'vue'
 import useFormat from '@/hooks/format'
 import { useAnimation } from '@/hooks/animation';
 import { useRouter } from 'vue-router';
+import { useMainStore } from '@/store';
 import VideoList from '@/components/list/VideoList.vue';
 
 const animation = useAnimation()
 
 const format = useFormat()
 const router = useRouter()
-
+const store = useMainStore()
 
 //视频标签列表
-let hotTags = ref<videoTag[]>()
+let hotTags = ref<videoTag[]>(
+    [
+        {id: 60100, name: '翻唱'},
+        {id: 2100, name: '生活'},
+        {id: 1105, name: '最佳饭制'},
+        {id: 1101, name: '舞蹈'},
+        {id: 2103, name: '游戏'},
+        {id: 58100, name: '现场'},
+        {id: 58101, name: '听BGM'},
+        {id: 1000, name: 'MV'},
+        {id: 57104, name: 'ACG音乐'}
+     ])
 
 //当前视频标签
 let curTags = ref<videoTag>({id:-1, name:'全部视频'})
@@ -87,9 +99,11 @@ let offset = ref(0)
 let isLoading = ref(false)
 
 const toVideoHotTag = async()=>{
+    if(!store.login) return 
     const res = await getVideoHotTag()
     if(res.code!=200) return
     hotTags.value = res.data
+    console.log("hotTags",hotTags.value)
 }
 
 const toVideoAlltag= async()=>{
@@ -102,6 +116,7 @@ const changTag = (tag:videoTag)=>{
     curTags.value = tag
     offset.value = 0
     videoList.value.length = 0
+    console.log("curTags.value",curTags.value)
     toVideoByTag()
 }
 

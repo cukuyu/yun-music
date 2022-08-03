@@ -113,8 +113,10 @@ const toPersonalFM =  async()=>{
             fmPlay()
         }
     }
-
 }
+   
+
+
 
 const fmPlay = ()=>{
     if(store.playType!='fm'){
@@ -124,8 +126,16 @@ const fmPlay = ()=>{
     store.play = !store.play
 }
 
-
-toPersonalFM()
+//fm再次进入防止刷新
+if(store.playType!='fm'){
+    toPersonalFM()
+}else{
+    musicList = store.musicList
+    curMusicInfo.imgUrl = musicList[store.currentIndex].al.picUrl
+    curMusicInfo.name = musicList[store.currentIndex].name
+    curMusicInfo.author = musicList[store.currentIndex].ar
+    curIndex.value = store.currentIndex
+}
 
 </script>
 

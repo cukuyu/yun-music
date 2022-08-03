@@ -82,10 +82,12 @@ let topMvList = ref<MVDetail[]>([])
 const changTag = (index:number, isNew:boolean=true)=>{
     if(isNew){
         newIdx.value = index
+        newMvList.value.length = 0
         toNewMv()
     }
     else{
         topIdx.value = index
+        topMvList.value.length = 0
         toTopMv()
     }
 

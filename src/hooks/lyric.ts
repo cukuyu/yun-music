@@ -1,9 +1,9 @@
 /* 歌词提取 */
 import { LyricBase, lyricLine } from '@/types/music'
-import { ref, Ref } from 'vue'
+import { ref, Ref, reactive, } from 'vue'
 
-export default function useLyric(str: string): Ref<LyricBase> {
-    let lyricObj = ref<LyricBase>({
+export default function useLyric(str: string): LyricBase {
+    let lyricObj = reactive<LyricBase>({
         lines: [{ time: 1, txt: '解析歌词失败' }],
         total: 1,
         curren: 0,
@@ -15,7 +15,7 @@ export default function useLyric(str: string): Ref<LyricBase> {
     let arr = str.split('\n')
     const regTime = /\[\d{2}:\d{2}.\d{2,3}\]/
     try {
-        lyricObj.value.lines.pop()
+        lyricObj.lines.pop()
         arr.forEach(item => {
             if (item === '') return
             const obj: lyricLine = { txt: "", time: 0 }
@@ -24,15 +24,15 @@ export default function useLyric(str: string): Ref<LyricBase> {
             obj.txt = itemSplit[itemSplit.length-1].trim() === '' ? '' :  itemSplit[itemSplit.length-1].trim()
             obj.time = time ? formatLyricTime(time[0].slice(1, time[0].length - 1)) : 0
             if (obj.txt !== '') {
-                lyricObj.value.lines.push(obj)
+                lyricObj.lines.push(obj)
             }
         })
     } catch (error) {
         return lyricObj
     }
-    lyricObj.value.errorLyric = false
-    lyricObj.value.total = lyricObj.value.lines.length
-    lyricObj.value.curren = 0
+    lyricObj.errorLyric = false
+    lyricObj.total = lyricObj.lines.length
+    lyricObj.curren = 0
     return lyricObj
 }
 

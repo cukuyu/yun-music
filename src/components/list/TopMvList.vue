@@ -1,5 +1,5 @@
 <template>
-    <div class="top-mv-list mtop-20">
+    <div class="top-mv-list mtop-20" v-loading="!list || list.length==0">
         <ul class="top-mv-list-ul">
             <li class="mv-list-item" v-for="(item, index) in list">
                 <div class="mleft-20 font-20 cl-color mright-10">{{ index + 1 > 9 ? index + 1 + "" : "0" + (index + 1) }}</div>
@@ -45,6 +45,7 @@ const toMvDetail = (id:string|number)=>{
 <style lang="scss" scoped>
 .top-mv-list {
     .top-mv-list-ul {
+        min-height: 650px;
         display: flex;
         // align-items: center;
         flex-wrap: wrap;

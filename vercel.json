@@ -3,6 +3,8 @@
         {
             "source": "/api/(.*)",
             "destination": "/api/proxy"
-        }
+        },
+        { "source": "/(.*)", "destination": "/" }
+       
     ]
 }

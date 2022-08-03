@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive ,computed} from 'vue'
-import { artistQuery, artistTags } from '@/types/artistList'
+import { artistQuery } from '@/types/artistList'
 import { ToGetArtistList, } from "@/api/api_artist";
 import { imgList } from '@/types/imgList'
 import ImgList from '@/components/list/ImgList.vue'

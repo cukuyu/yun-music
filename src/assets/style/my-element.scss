@@ -71,10 +71,26 @@
     overflow: auto;
 }
 
-.right-drawer{
-    background-color: antiquewhite;
-    pointer-events: none;
+//音量背景
+.el-popover .el-popper{
+@include get-class-from-key('draw-bgc');
+@include get-class-from-key('cl-color');
 }
+
+.el-popper.is-light{
+    @include get-class-from-key('draw-bgc');
+}
+.el-popper .el-popper__arrow{
+    color: pink !important;
+}
+.el-popper  .el-slider__runway{
+    // @include get-class-from-key('cl3-bgc')
+}
+
+// .right-drawer{
+//     background-color: antiquewhite;
+//     pointer-events: none;
+// }
 
 /* 自定义头部输入框 */
 .header-bar .search-input  .el-input__inner {
@@ -244,4 +260,7 @@ table-layout: auto;
     cursor: auto;
 }
 
+.el-loading-mask{
+    background-color: transparent;
+}
 

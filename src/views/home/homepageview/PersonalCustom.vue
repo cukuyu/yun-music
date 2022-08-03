@@ -24,7 +24,7 @@
     </div>
     <div class="other-radar">
         <h1 class="font-20 font-bold">音乐推荐</h1>
-        <div class="private-radar-view">
+        <div>
             <ImgList
             :list="OtherRadarList"
             type="playlist"
@@ -42,7 +42,7 @@ import { getPlayListDetail } from '@/api/api_playlist'
 import {imgList} from '@/types/imgList'
 import ImgList from '@/components/list/ImgList.vue'
 
-import {ref} from 'vue'
+import {ref, shallowRef} from 'vue'
 import {useMainStore} from '@/store'
 import { useRouter } from 'vue-router'
 
@@ -55,22 +55,23 @@ const router = useRouter()
 let privateRadarId : string[] = ["3136952023","5300458264","5362359247","2829883282","5320167908",
                                 "5341776086","5327906368","2829896389","2829920189","2829816518"]
 
-let radarList = ref<imgList[]>()
+let radarList = shallowRef<imgList[]>()
 let radarInd = ref(0)
 
 const getPrivateRadar = async ()=>{
-    let tempList :imgList[] =  []
+    let allpriRadar = []
     for(const id of privateRadarId){
-        const res = await getPlayListDetail(id)
-        if(res.code!=200) continue
-        tempList.push(res.playlist)
+        allpriRadar.push(getPlayListDetail(id)) 
+        
     }
-    radarList.value = tempList
+    const res  = await Promise.all(allpriRadar)
+    radarList.value = res.map((item)=>item.playlist)
 }
 
 let radarListRef = ref()
 
 getPrivateRadar()
+
 const changeRadarIndex = (num:number)=>{
     radarInd.value += num
     if(radarInd.value>5){
@@ -93,6 +94,7 @@ let queryInfo ={
     offset:0, 
     limit:50
 }
+
 const getOtherRadarList = async ()=>{
     const res = await getUserPlayList(queryInfo.uid,queryInfo.offset,queryInfo.limit)
     if(res.code!=200) return
@@ -110,6 +112,11 @@ const toPlayListDetail = (id: number|string)=>{
 </script>
 
 <style lang="scss" scoped>
+
+
+.private-radar-view{
+    min-height: 200px;
+}
 .private-radar-btn{
     display: flex;
     justify-content: space-between;

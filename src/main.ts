@@ -11,6 +11,8 @@ import './assets/style/btn.scss'
 import './assets/style/list.scss'
 import * as icons from '@element-plus/icons-vue'
 
+import imgLazy from './hooks/imgLazy';
+
 const app = createApp(App)
 
 
@@ -21,4 +23,6 @@ Object.keys(icons).forEach(key => {
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)
+//图片懒加载
+imgLazy(app)
 app.mount('#app')

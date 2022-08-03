@@ -1,26 +1,19 @@
 <template>
     <div class="login">
         <div class="login-container">
+            <div class="login-header">
+                <div class="img-wrap" v-show="loginType!=1">
+                    <img src="@/assets/img/loginqr.png" alt="" @click="loginType=1">
+                    <div class="img-wrap-tip">扫码登录更安全</div>
+                </div>
+                <div class="off-view-btn">
+                    <i class="iconfont icon-off font-24 pointer" @click="store.loginView=false"></i>
+                </div>
+            </div>
             <div class="login-wrapper">
-                <span class="title">{{currentType}}登入</span>
-                <div class="type-btn-wrap">
-                    <button
-                    v-for="(item,index) in type"
-                    :key="index"
-                    class="no-btn"
-                    @click="changeType(index)"
-                    :class="{'btn-active' :index===loginType}"
-                    >{{item}}</button>
-                </div>
-                <component :is="currentComponent" ref="loginRef"></component>
-                <div class="form-btn-container" v-show="loginType!=1">
-                    <div class="btn-bg">
-                        <button class="form-btn" @click="doLogin">
-                            {{btnText}}
-                            <el-icon v-show="isLoading"><i-loading/></el-icon>
-                        </button>
-                    </div>
-                </div>
+                <keep-alive>
+                    <component :is="currentComponent" ref="loginRef" @toOtherMode="changeType"></component>
+                </keep-alive>
             </div>
         </div>
     </div>
@@ -29,34 +22,30 @@
 
 <script lang="ts" setup>
 
-import {ref, reactive, computed, onBeforeUnmount} from 'vue'
+import {ref, reactive, computed, onBeforeUnmount, shallowRef} from 'vue'
 import LoginByQr from '@/components/login/LoginByQr.vue'
 import LoginByPhone from '@/components/login/LoginByPhone.vue'
-import LoginByCode from '@/components/login/LoginByCode.vue'
 import {useMainStore} from '@/store/index'
-// import { doLogin } from '@/api/api_user'
 
 const store = useMainStore()
 
 let loginRef = ref()
-let isLoading = ref(false)
-let loginType = ref()
+// let isLoading = ref(false)
+let loginType = ref(1)
 const type = reactive(['手机号','二维码','短信验证码'])
-const loginComponent = reactive([LoginByPhone, LoginByQr, LoginByCode])
+const loginComponent = shallowRef([LoginByPhone, LoginByQr])
 
-let btnText = computed(()=>{return isLoading.value ? '登录中':'登录'})
-let currentComponent = computed (()=>{ return loginComponent[loginType.value]})
-let currentType = computed(()=>{return type[loginType.value]})
+let currentComponent = computed (()=>{ return loginComponent.value[loginType.value]})
 
 
 onBeforeUnmount(()=>{
-    console.log("onBeforeUnmount")
     store.getAcount()
-    console.log("afterBeforeUnmount")
 })
-const changeType = (newType:number)=>{
-    loginType.value  = newType
+
+const changeType = (index:number)=>{
+    loginType.value = index
 }
+
 
 const doLogin = ()=>{
     loginRef.value.login()
@@ -66,24 +55,64 @@ const doLogin = ()=>{
 
 <style lang="scss" scoped>
 .login {
-    width: 100%;
-    margin: 0 auto;
-    overflow: hidden;
-    background-color: #FFF;
+    position: fixed;
+    top: 20%;
+    left: 40%;
+    width: 350px;
+    height: 530px;
+    background-color: #fff;
+    z-index: 1000;
+    border-radius: 1%;
+    box-shadow: 0 0 10px 4px #666;
     .login-container {
-        display: flex;
-        height: 100vh;
-        justify-content: center;
-        align-items: center;
-        
+        height: 100%;
+        .login-header{
+            display: flex;
+            justify-content: space-between;
+            height: 50px;
+            .img-wrap{
+                // display: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                img{
+                    height: 50px;
+                    width: 50px;
+                    clip-path: polygon(0 0, 100% 0, 0 100% );
+                    cursor: pointer;
+                }
+                .img-wrap-tip{
+                    position: relative;
+                    height: 25px;
+                    width: 107px;
+                    margin-left: 10px;
+                    margin-top: 5px;
+                    background-color:#999999;
+                    color: #fff;
+                    text-align: center;
+                    line-height: 25px;
+                    font-size: 12px;
+                    border-radius: 4%;
+                }
+                .img-wrap-tip::before{
+                    position: absolute;
+                    content: "";
+                    left: -6px;
+                    border: 6px solid transparent;
+                    border-top-color: #999999;
+                }
+            }
+            .off-view-btn{
+                margin-left: auto;
+                line-height: 40px;
+                margin-right: 10px;
+                color: #a5a5a5;
+            }
+        }
     }
 
-    .login-wrapper{
-        width: 500px;
-        height: 600px;
-        background-color: #CCC;
-        border-radius: 10px;
-        padding: 65px 55px 54px 55px;
-    }
+    // .login-wrapper{
+    // }
 }
 </style>

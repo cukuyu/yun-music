@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="new-song-view mtop-20">
-            <div class="new-song-table">
+            <div class="new-song-table" v-loading="!newSongList||newSongList.length==0">
                 <div 
                v-for="(item,index) in newSongList"
                 class="new-song-table-item stripe-list-item" 
@@ -64,7 +64,7 @@
 <script lang="ts" setup>
 import { getTopMusic } from '@/api/api_music'
 import { musicInfo } from '@/types/music'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import InfoList from '@/components/list/InfoList.vue'
 import Creator from '@/components/text/Creator.vue'
 
@@ -82,7 +82,7 @@ let allTypes = [{ name: "全部", id: 0 }, { name: "华语", id: 7 }, { name: "�
 let type = ref(0)
 let newSongList = ref<musicInfo[]>([])
 const getNewSong = async () => {
-
+    newSongList.value.length = 0
     const res = await getTopMusic(type.value)
     if (res.code != 200) return
     newSongList.value.length = 0
@@ -157,6 +157,7 @@ const showCurren = (id:number)=>{
         align-items: center;
         height: 80px;
         font-size: 14px;
+        min-width: 200px;
         .sub-img {
             position: relative;
             height: 60px;

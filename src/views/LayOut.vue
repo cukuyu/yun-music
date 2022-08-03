@@ -21,6 +21,7 @@
     <div class="footer" v-show="!store.videoView">
       <FooterBar></FooterBar>
     </div>
+    <div v-if="store.loginView"><Login></Login></div>
   </div>
 </template>
 
@@ -28,6 +29,7 @@
 import HeaderBar from '@/components/header/HeaderBar.vue'
 import AsideBar from '@/components/aside/AsideBar.vue';
 import FooterBar from '@/components/footer/FooterBar.vue'
+import Login from './Login.vue';
 
 import { useMainStore } from '@/store';
 import { computed } from 'vue';

@@ -137,6 +137,10 @@ global :root {
     margin-left: 6px;
 }
 
+.mleft-5 {
+    margin-left: 6px;
+}
+
 .mleft-10 {
     margin-left: 10px;
 }
@@ -561,6 +565,8 @@ global :root {
 }
 
 
+
+//css-var
 body{
     //歌曲抽屉详情
     --draw-bg : linear-gradient(#e7e7e7 50%, #FFF 70%) fixed;
@@ -571,6 +577,4 @@ body{
     //歌词
     --lyric-color : #666666;
     --lyric-active-color : #000000;
-
-
 }

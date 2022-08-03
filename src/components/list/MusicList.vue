@@ -1,5 +1,5 @@
 <template>
-<div class="music-list" style="width: 100%">
+<div class="music-list" style="width: 100%" v-loading="props.list.length==0">
     <el-table
     :data="props.list"
     size="default"

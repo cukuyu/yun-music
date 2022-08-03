@@ -1,5 +1,5 @@
 <template>
-<div class="mv-list mtop-10">
+<div class="mv-list mtop-10" v-loading="props.list.length==0">
     <div 
     class="mv-list-item" 
     v-for="item in props.list"
