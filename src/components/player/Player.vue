@@ -1,13 +1,13 @@
 <template>
     <div class="player">
         <div class="player-container mleft-10">
-            <div class="play-left">
+            <div class="play-left" >
                 <img 
                 :src="imgInfo.imgUrl" 
-                class="img img-radius10 pointer mright-10" @click="changeDrawerView">
-                <div class="music-info">
+                class="img img-radius10 pointer mright-10" @click="changeDrawerView" v-show="musicList.length!=0">
+                <div class="music-info" v-show="musicList.length!=0">
                     <div class="text-hidden font-14 ">
-                        <span>{{imgInfo.name}}</span> 
+                        <span class="text-hidden">{{imgInfo.name}}</span> 
                         <LoveButton :id="currentMusicId"></LoveButton>
                     </div>
                     <div class="text-hidden font-12">{{imgInfo.author}}</div>
@@ -15,15 +15,17 @@
             </div>
             <div class="player-wrapper">
                 <div class="player-bar">
-                    <button class="no-btn">
-                        <i class="iconfont icon-liebiaoshunxu" ></i>
+                    <button class="no-btn" @click="changePlayMusicMode">
+                        <i v-show="curPlayMusicMode=='cycle'" class="iconfont icon-xunhuanbofang" ></i>
+                        <i v-show="curPlayMusicMode=='single'" class="iconfont icon-danquxunhuan" ></i>
+                        <i v-show="curPlayMusicMode=='random'" class="iconfont icon-suiji" ></i>
                     </button>
                     <button class="no-btn" @click="nextMusic(-1)">
                         <i class="iconfont icon-shangyishou"></i>
                     </button >
-                    <button class="no-btn" @click="pause">
+                    <button class="no-btn btn-play" @click="pause">
                         <i v-show="play"  class="iconfont icon-zanting"></i>
-                        <i v-show="!play" class="iconfont icon-bofang "></i>
+                        <i v-show="!play" class="iconfont icon-24gf-play "></i>
                     </button>
                     <button class="no-btn" @click="nextMusic(1)">
                         <i class="iconfont icon-xiayishou"></i>
@@ -49,7 +51,7 @@
             </div>
             <div class="btn-other mright-30">
                 <div class="tone-quality pointer">
-                    <Tag text="标准" color="#000"></Tag>
+                    <Tag text="极高" color="#ec4141" height="16px" fontSize="13px"></Tag>
                 </div>
                 <div class="jingyun" @click="drawerSound = !drawerSound">
                     <i class="iconfont icon-jingyun font-24 pointer"></i>
@@ -92,7 +94,7 @@
         :src="musicUrl" 
         ref="audioRef"
         @timeupdate="updateCurrenTime"
-        @ended="nextMusic(1)">
+        @ended="endedMusic">
         </audio>
         <div 
         v-show="drawer" 
@@ -109,15 +111,17 @@
 
 <script lang="ts" setup>
 import {getMusicUrl} from '@/api/api_music'
-import { ref, reactive, computed, watch, nextTick } from 'vue'
-import { useMainStore } from '@/store/index';
+import { ref, reactive, computed, watch, nextTick, Ref } from 'vue'
+
 import Tag from '../text/Tag.vue';
 import DrawerBar from '@/components/drawer/DrawerBar.vue';
 import DrawerView from '@/components/drawer/DrawerView.vue';
 import DrawerSound from '@/components/drawer/DrawerSound.vue';
-import useFormat from '@/hooks/format'
 import LoveButton from '@/components/button/LoveButton.vue';
 import {ElMessage} from 'element-plus'
+
+import { useMainStore } from '@/store/index';
+import useFormat from '@/hooks/format'
 import { useAnimation } from '@/hooks/animation';
 import { useAudio } from '@/hooks/audio';
 
@@ -136,8 +140,8 @@ let imgInfo = reactive({
 })
 
 
-let audioRef = ref()
-let audio = useAudio(audioRef)
+let audioRef = ref<HTMLAudioElement>()
+let audio = useAudio(audioRef as Ref<HTMLAudioElement>)
 
 // 音量
 let volume = ref(20)
@@ -148,16 +152,70 @@ let currenPercent = ref(0)
 let currentMusicId = computed(()=>store.currentMusicId)
 
 let currentIndex= computed(()=>store.currentIndex)
+
+
+//循环、单曲、随机
+const playMusicMode = ['cycle','single','random'] 
+
+let curPlayMusicModeIndex = ref(0)
+let curPlayMusicMode = computed(()=>{
+    //
+    let tempMode = playMusicMode[curPlayMusicModeIndex.value]
+    //单曲循环
+    if(tempMode==='single'){
+        nextTick(()=>audioRef.value!.loop=true)
+    }else{
+        nextTick(()=>audioRef.value!.loop=false)
+    }
+    if(tempMode==='random'){
+        randomIndex.value = randomList.value.indexOf(currentIndex.value)
+        if(randomIndex.value==-1) randomIndex.value = 0
+    }
+    
+    return playMusicMode[curPlayMusicModeIndex.value]
+})
+
+const changePlayMusicMode = ()=>{
+
+    curPlayMusicModeIndex.value = (curPlayMusicModeIndex.value + 1)% playMusicMode.length
+}
+
+//随机模式下的列表
+let randomList = ref<Number[]>([])
+let randomIndex = ref(0)
+const shuffle = (arr:Number[])=>{
+    let i = arr.length
+    if(i==0||i==1) return arr
+    while(i){
+        let j = Math.floor(Math.random()*i--)
+        //保证不等于自身
+        let temp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = temp
+    }
+    return arr
+}
+
+//播放列表
 let musicList = computed(()=> {
+
+    randomList.value = new Array(store.musicList.length).fill(0).map((item,index) => index) 
+    randomList.value = shuffle(randomList.value)
     return store.musicList
 })
+
+
+//当前歌曲信息
 let currentMusicInfo = computed(()=> {
     return store.currentMusicInfo
 })
 
+//当前歌曲时间
 let currentTime =  computed(()=> {
     return store.currentMusicInfo.currentTime
 })   
+
+//播放状态
 let play = computed(()=>{{
     return store.play
 }})
@@ -172,13 +230,15 @@ watch(()=>currentMusicId.value,
     }
 )
 
+//
 watch(()=>play.value,
     (val)=>{
         if(musicUrl.value==null||musicUrl.value.length==0){return}
         if(val){
-            audio.play()
+            nextTick(()=>audio.play())
+            
         } else {
-            audio.pause()
+            nextTick(()=>audio.pause())
         }
     }
 )
@@ -190,12 +250,15 @@ watch(()=>volume.value,
     }
 )
 
+//自动播放
 watch(()=>musicUrl.value,
     (val)=>{
-        if(val==null){return}
-        nextTick(()=>{
+        if(val==null||val.length==0){
+            return
+        }
+        else{
             audio.play()
-        })
+        }
     }
 )
 
@@ -224,6 +287,9 @@ const getImgInfo = ()=>{
 }
 
 const pause = ()=>{
+    if(!musicList.value || musicList.value.length==0){
+        return 
+    }
     if(musicUrl.value==null||musicUrl.value.length==0){
         ElMessage.error('播放失败')
     }
@@ -233,7 +299,6 @@ const pause = ()=>{
 const getTolaltime = ()=> {
       store.currentMusicInfo.totalTime =  musicList.value[currentIndex.value].dt
 }
-
 
 const updateCurrenTime = ()=>{
     let curTime = 0
@@ -254,7 +319,7 @@ const changeCurrenTime = (time:number)=>{
     }
 }
 
-
+//修改音量
 const changeVolume = (val:number)=>{
     if(audioRef.value){
         audioRef.value.volume = val/100
@@ -270,7 +335,25 @@ const mute = ()=>{
         lastVolume.value = volume.value
     }
 }
+
+
+//正常结束
+const endedMusic = ()=>{
+    //单曲循环
+    if(curPlayMusicMode.value=='single'){
+        return 
+    }else{
+        nextMusic(1)
+    }
+}
+//播放下一首歌
 const nextMusic = (val:number)=>{
+    if(!musicList.value || musicList.value.length==0) return
+   
+    musicUrl.value = ""
+    currentMusicInfo.value.currentTime = 0.
+    store.currentMusicInfo.currentTime = 0.
+    //fm
     if(store.playType=='fm'){
         let nextIndex = currentIndex.value+val
         if(nextIndex==3){
@@ -280,10 +363,17 @@ const nextMusic = (val:number)=>{
             store.currentIndex = nextIndex
         }
     }else{
-        let nextIndex = (currentIndex.value+val+musicList.value.length) % (musicList.value.length)
-        store.currentMusicId = musicList.value[nextIndex].id
-        store.currentIndex = nextIndex
-
+        //随机
+        if(curPlayMusicMode.value =='random'){
+            randomIndex.value = (randomIndex.value+val+musicList.value.length)  % (musicList.value.length)
+            store.currentMusicId = musicList.value[randomList.value[randomIndex.value] as number].id
+            store.currentIndex =  randomList.value[randomIndex.value] as number
+        }else{
+            let nextIndex = (currentIndex.value+val+musicList.value.length) % (musicList.value.length)
+            store.currentMusicId = musicList.value[nextIndex].id
+            store.currentIndex = nextIndex
+        }
+      
         //设置drawerView的背景颜色变化
         if(store.drawerView && window.document.documentElement.getAttribute("data-theme")!="dark"){
             let rgb = []
@@ -293,10 +383,9 @@ const nextMusic = (val:number)=>{
             document.body.style.setProperty('--draw-bg', `linear-gradient(rgb(${rgb[0]},${rgb[1]},${rgb[2]}) 0%, #FFF 40%) fixed`)
         }
     }
-    musicUrl.value = ""
-    currentMusicInfo.value.currentTime = 0.
-    store.currentMusicInfo.currentTime = 0.
+  
 }
+
 
 
 
@@ -333,6 +422,8 @@ let drawer = animation.clickHidden(drawerBarRef)
 
 let drawerSoundRef = ref()
 let drawerSound =  animation.clickHidden(drawerSoundRef)
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -350,7 +441,9 @@ let drawerSound =  animation.clickHidden(drawerSoundRef)
     align-items: center;
     width: 300px;
     height: 80px;
-    
+    .music-info{
+        width: 100%;
+    }
 }
 
 .img{
@@ -371,7 +464,9 @@ let drawerSound =  animation.clickHidden(drawerSoundRef)
     & .no-btn:nth-child(3) {
         height: 32px;
         width: 32px;
+        line-height: 32px;
         border-radius: 50%;
+        @include get-class-from-key('cl5-bgc');
     }
     & .no-btn:hover{
         color: $headRed;

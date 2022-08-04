@@ -1,5 +1,5 @@
 <template>
-    <span class="tag font-14 ">{{props.text}}</span>
+    <span class="tag">{{props.text}}</span>
 </template>
 
 <script lang="ts" setup>
@@ -12,6 +12,14 @@ const props = defineProps({
     color:{
         type: String,
         default:"#ec4141"
+    },
+    height:{
+        type: String,
+        default:"24px"
+    },
+    fontSize:{
+        type: String,
+        default:"16px"
     }
 })
 
@@ -19,12 +27,13 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .tag{
-    height: 24px;
-    line-height: 26px;
+    height: v-bind(height);
+    line-height: v-bind(height);
     border: 1px v-bind(color) solid;
     border-radius:3px;
     color:  v-bind(color) ;
-    padding: 1px;
+    padding:0 1px;
+    font-size: v-bind(fontSize);
 }
 
 </style>

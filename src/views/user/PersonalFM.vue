@@ -3,7 +3,7 @@
         <div class="fm-music-info">
             <div class="img-button">
                 <div class="img-wrap">
-                    <img :src="curMusicInfo.imgUrl+'?param=300y300'" alt="">
+                    <img alt="" :src="curMusicInfo.imgUrl+'?param=300y300'">
                     <div class="play-btn pointer" @click="fmPlay">
                         <i v-show="!isPlay" class="iconfont icon-bofang font-20" ></i>
                         <i v-show="isPlay" class="iconfont icon-zanting font-20"></i>
@@ -115,8 +115,9 @@ const toPersonalFM =  async()=>{
     }
 }
    
-
-
+const imgUrl = ()=>{
+    return curMusicInfo.imgUrl+'?param=300y300'
+}
 
 const fmPlay = ()=>{
     if(store.playType!='fm'){

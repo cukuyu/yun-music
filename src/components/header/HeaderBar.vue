@@ -11,10 +11,10 @@
 
             <!-- 路由历史按钮 -->
             <div class="btn-history">
-                <button class="btn-circle">
+                <button class="btn-circle" @click="router.go(-1)">
                     <i class="iconfont icon-arrow-left-bold"></i>
                 </button>
-                <button class="btn-circle">
+                <button class="btn-circle" @click="router.go(1)">
                     <i class="iconfont icon-arrow-right"></i>
                 </button>
             </div>
@@ -70,13 +70,13 @@
                 <i class="iconfont icon-SmallWindow font-20"></i>
             </div>
             <div class="window-minimize mleft-20">
-                <i class="iconfont icon-minimize font-20" ></i>
+                <i class="iconfont icon-minimize font-20" @click="windowMinimize"></i>
             </div>
             <div class="window-maximize mleft-20">
-                <i class="iconfont icon-maximize font-20" ></i>
+                <i class="iconfont icon-maximize font-20" @click="windowMaximize"></i>
             </div>
-            <div class="window-off mleft-20  mright-30 ">
-                <i class="iconfont icon-off font-20"></i>
+            <div class="window-off mleft-20  mright-30">
+                <i class="iconfont icon-off font-20" @click="windowExit"></i>
             </div>
 
         </div>
@@ -87,8 +87,8 @@
 
 
 <script lang="ts" setup>
-import {ref, computed, watch} from 'vue'
-
+import {ref, computed} from 'vue'
+import { appWindow,LogicalSize } from '@tauri-apps/api/window';
 
 
 import ThemeSkin from './headerBar/ThemeSkin.vue';
@@ -97,6 +97,7 @@ import AccountInfo from './headerBar/AccountInfo.vue';
 import { useAnimation } from '@/hooks/animation';
 import {useRouter} from 'vue-router'
 import { useMainStore } from '@/store';
+
 
 const router = useRouter()
 const store = useMainStore()
@@ -160,6 +161,32 @@ const getAccountInfo = ()=>{
         store.loginView = !store.loginView
     }
     
+}
+
+
+
+
+const windowExit = async()=>{
+    if(window.__TAURI__){
+        await appWindow.close();
+    }
+}
+
+const windowMinimize = async()=>{
+    if(window.__TAURI__){
+       await appWindow.minimize();
+    }
+}
+
+const windowMaximize = async()=>{
+    if(window.__TAURI__){
+        if(!store.windowIsMaximize){
+            await appWindow.maximize();
+        }else{
+            await appWindow.setSize(new LogicalSize(1200, 600));
+        }
+        store.windowIsMaximize = !store.windowIsMaximize
+    }
 }
 
 </script>

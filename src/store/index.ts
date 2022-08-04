@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
-import { getAccount, dologinOut, getUserPlayList } from '@/api/api_user'
+import { getAccount, dologinOut, getUserPlayList, anonimousLogin } from '@/api/api_user'
 import { getLikeIdList } from '@/api/api_music'
 import { user } from '@/types/person'
 import { playList, musicInfo,} from '@/types/music'
+import { fa } from 'element-plus/lib/locale'
 
 
 export const useMainStore = defineStore({
@@ -24,8 +25,10 @@ export const useMainStore = defineStore({
       totalTime: 0,
       currentTime: 0,
     },
-    //浏览器高度
+    //浏览器高度, drawerBar自适应
     clientHeight: 969,
+    //windowSize是否是最大值
+    windowIsMaximize: false,
     //登入状态
     login : window.sessionStorage.getItem('isLogin') !== 'true' ? false : true,
     //登录页面是否显示
@@ -34,6 +37,10 @@ export const useMainStore = defineStore({
     account: {} as any,
     // 用户信息
     profile: {} as user,
+    //游客
+    anonimousUser: false,
+
+
     // 历史播放列表
     historyList: [],
     // 喜欢音乐列表
@@ -75,19 +82,30 @@ export const useMainStore = defineStore({
     },
 
     async loginOut(){
-      console.log("login",this.login)
       const res = await dologinOut()
       if(res.code!=200){
 
       }else{
         window.location.reload()
+        this.setLogin(false)
+        this.account = {}
+        this.likeList = []
+        this.myPlayList = []
+        this.musicList = []
       }
     },
 
     async getAcount(){
       const res = await getAccount()
-      if(res.code!=200) return false
+      if(res.code!=200){
+        return false
+      }
       else if(res.account!=null){
+        if(res.account.anonimousUser){
+          this.anonimousUser = true
+          return 
+        }
+        this.anonimousUser = false
         this.setLogin(true)
         this.setLoginInfo(res.account,res.profile)
         this.getLikeList()
@@ -95,6 +113,7 @@ export const useMainStore = defineStore({
         return true
       } else {
         this.setLogin(false)
+        anonimousLogin()
         return false
       }
     },
@@ -122,16 +141,17 @@ export const useMainStore = defineStore({
 
     playMusic(payLoad:{list:musicInfo[],id:number}){
       this.playType = 'music'
-      this.musicList = payLoad.list 
       this.currentMusicId = payLoad.id
       this.currentIndex = payLoad.list.findIndex((item:any)=>item.id==payLoad.id)
       this.play=true
+      this.musicList = payLoad.list 
     },
     playFmMusic(payLoad:{list:musicInfo[]}){
       this.playType = 'fm'
-      this.musicList = payLoad.list 
       this.currentMusicId = payLoad.list[0].id 
       this.currentIndex = 0
+      this.musicList = payLoad.list 
+    
     }
   },
 })

@@ -66,7 +66,6 @@ const pureColors = [
 ]
 let menuIndex = ref(0)
 const handClick = (index:number, )=>{
-    console.log("index",index)
     menuIndex.value = index
 }
 const changeTheme = (color:string)=>{

@@ -25,14 +25,14 @@
               <img class="img img-radius5" :src="info?.coverImgUrl" alt="">
             </div>
             <div class="detail-desc-info">
-              <div class="info-title">
+              <div class="info-title text-hidden">
                 <Tag text="歌单"></Tag>
                 <span class="font-20 font-bold mleft-10">{{ info?.name }}</span>
-                <span>
+                <!-- <span>
                   <el-icon class="list-edit font-14">
                     <edit />
                   </el-icon>
-                </span>
+                </span> -->
               </div>
               <div class="info-author">
                 <img class="author-img img circle pointer mright-12" :src="info?.creator?.avatarUrl"
@@ -96,7 +96,7 @@
       <TabMenu :menuList="[{ name: '歌曲列表' }, { name: `评论(${info?.commentCount||0})` }, { name: '收藏者' }]"
         @menuClick="handMenuClick" mode="menu">
       </TabMenu>
-      <div class="detail-search mright-30">
+      <div class="detail-search mright-30" v-show="tableIndex==0">
         <el-input placeholder="搜索歌单音乐" clearable v-model="key">
           <template #suffix>
             <el-icon class="el-input__icon">
@@ -247,6 +247,8 @@ input[type='checkbox'] {
 
 .info-title {
   height: 24px;
+  width: 600px;
+
 
   span {
     line-height: 24px;

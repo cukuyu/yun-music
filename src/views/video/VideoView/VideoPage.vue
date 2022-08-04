@@ -103,7 +103,6 @@ const toVideoHotTag = async()=>{
     const res = await getVideoHotTag()
     if(res.code!=200) return
     hotTags.value = res.data
-    console.log("hotTags",hotTags.value)
 }
 
 const toVideoAlltag= async()=>{
@@ -116,7 +115,6 @@ const changTag = (tag:videoTag)=>{
     curTags.value = tag
     offset.value = 0
     videoList.value.length = 0
-    console.log("curTags.value",curTags.value)
     toVideoByTag()
 }
 

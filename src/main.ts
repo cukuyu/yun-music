@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router/router'
 import { createPinia } from 'pinia'
 import ElementPlus from 'element-plus';
+import { appWindow } from '@tauri-apps/api/window';
 
 import 'element-plus/dist/index.css'
 import './assets/style/global.scss'
@@ -12,6 +13,11 @@ import './assets/style/list.scss'
 import * as icons from '@element-plus/icons-vue'
 
 import imgLazy from './hooks/imgLazy';
+
+if(window.__TAURI__){
+    await appWindow.center()
+    await appWindow.startDragging();
+}
 
 const app = createApp(App)
 
@@ -26,3 +32,4 @@ app.use(ElementPlus)
 //图片懒加载
 imgLazy(app)
 app.mount('#app')
+

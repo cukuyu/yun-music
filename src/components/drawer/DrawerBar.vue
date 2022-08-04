@@ -81,7 +81,6 @@ let play = computed(()=> store.play)
 onMounted(()=>{
   window.onresize = () => {
         return (() => {
-            console.log(`clientHight:${document.documentElement.clientHeight}`)
             store.clientHeight = parseInt(`${document.documentElement.clientHeight}`)
         })()
     }

@@ -198,7 +198,6 @@ const toVideoDetail = async()=>{
     if(res.code!=200) return
     if(props.type=='vi')videoInfo.value = res.data
     else mvInfo.value = res.data
-    // console.log("toVideoDetail",res)
 }
 //获取视频url
 const toVideoUrl = async()=>{

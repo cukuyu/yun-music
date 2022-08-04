@@ -6,6 +6,10 @@ export const getLikeIdList = (uid:number)=>{ return get('likelist',{uid,timestam
 
 export const getMusicUrl = (id:number) => get('/song/url', { id })
 
+export const downMusic = (id:number) =>get('/song/download/url', {id})
+
+export const likeMusic = (id:number|string,like=true) => get('/like', {id,like})
+
 
 
 export const getLyric = (id:number) =>get('/lyric',{id})

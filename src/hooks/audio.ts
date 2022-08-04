@@ -6,16 +6,13 @@ import {effectNode} from '@/types/audioEffectType'
 //音频控制器
 export const useAudio = (audio:Ref<HTMLAudioElement>)=>{
     const store = useMainStore()
-    console.log("123345")
     const AudioContext = window.AudioContext ;
     const ac = new AudioContext()
     let gainNode = ac.createGain()
     const effectNodes = [{name:'panner',node:pannerNode}]
     let curNode:any = null
     nextTick(()=>{
-       
         //同源策略
-
         audio.value.crossOrigin = 'anonymous';
         let sourceNode = ac.createMediaElementSource(audio.value)
         sourceNode.connect(gainNode)
@@ -50,14 +47,14 @@ export const useAudio = (audio:Ref<HTMLAudioElement>)=>{
         ac.resume()
         gainNode.gain.linearRampToValueAtTime(0.5,ac.currentTime+1)
         if(curNode!=null) curNode.play()
-        audio.value.play()
+        nextTick(()=>audio!.value.play())
     }
     const pause =()=>{
         //淡出
         gainNode.gain.linearRampToValueAtTime(0,ac.currentTime+1)
         setTimeout(()=>{
             if(!store.play){
-                audio.value.pause()
+                audio!.value.pause()
                 if(curNode!=null) curNode.pause()
             }
         },1000)

@@ -156,8 +156,6 @@ const checkForm = () => {
             return false
         }
     }else if(mode.value=='code'){
-        console.log('code',/[0-9]{4}$/.test(form.captcha+""))
-        console.log('form.captcha',form.captcha)
         if(!/[0-9]{4}$/.test(form.captcha+"")){
             errorMsg.value = '请输入正确的验证码'
             return false
@@ -185,7 +183,6 @@ const login = async () => {
     if(!checkForm()) return 
     const res = await doLogin(form)
     if (res.code != 200){
-        console.log("login",res)
         errorMsg.value = res.message
         if(errorMsg.value=="Request failed with status code 501"){
             errorMsg.value = '手机号未注册'
@@ -215,7 +212,6 @@ const ResentCaptchaTime = ()=>{
     setTimeout(ResentCaptchaTime,1000)
 }
 const sentCaptcha = async ()=>{
-    console.log('seneCaptchaStart')
     if(!checkPhone()) return
     const res = await getCaptcha(form.phone)
     if(res.code!=200) {

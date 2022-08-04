@@ -1,6 +1,6 @@
 <template>
 <div class="personal-custom mtop-60" >
-    <div class="private-radar">
+    <div class="private-radar" v-if="store.login">
         <h1 class="font-20 font-bold">{{store.profile.nickname}}的雷达歌单</h1>
         <div class="private-radar-btn">
             <h1 class="font-14 gray mtop-5">根据你的红心收藏为你推荐更多宝藏歌曲</h1>
@@ -59,6 +59,8 @@ let radarList = shallowRef<imgList[]>()
 let radarInd = ref(0)
 
 const getPrivateRadar = async ()=>{
+    console.log(store.login)
+    if(!store.login) return 
     let allpriRadar = []
     for(const id of privateRadarId){
         allpriRadar.push(getPlayListDetail(id)) 

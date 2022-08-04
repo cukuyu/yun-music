@@ -24,13 +24,19 @@
             <template v-slot="{row}">
                 <LoveButton :id="row.id"></LoveButton>
                 &nbsp;
-                <i class="iconfont font-14 icon-down pointer"></i>
+                <DownloadButton :id="row.id" :name="row.name"></DownloadButton>
             </template>
         </el-table-column>
         <el-table-column prop="name" label="标题" width="675"  show-overflow-tooltip>
             <template v-slot="{row}">
                 <span class="c-color" :class="{'active-color':showCurren(row.id)}">{{row.name}}</span>
                 <span v-show="row.alia[0]" class="gray">{{`(${row.alia[0]})`}}</span>
+                <span v-show="row.fee==1" class="mleft-3">
+                    <Tag text="VIP" color="#fe672e" :height="'18px'" :fontSize="'12px'"></Tag>
+                </span>
+                <span v-show="row.mv!=0" class="mleft-3">
+                    <Tag text="MV" color="#ec4141" :height="'18px'" :fontSize="'12px'"></Tag>
+                </span>
             </template>
         </el-table-column>
         <el-table-column prop="ar[0].name" label="歌手" width="325">
@@ -60,7 +66,9 @@ import { useMainStore } from '@/store/index';
 import {musicInfo} from '@/types/music'
 import useFormat from '@/hooks/format'
 import LoveButton from '../button/LoveButton.vue';
+import DownloadButton from '../button/DownloadButton.vue';
 import Creator from '../text/Creator.vue';
+import Tag from '../text/Tag.vue';
 import { useRouter } from 'vue-router';
 // import {checkMusic} from '@/api/api_music'
 // import {ElMessage} from 'element-plus'

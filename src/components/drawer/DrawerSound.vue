@@ -10,7 +10,7 @@
             class="recom-effect-item"
             v-for="(item,index) in recomEffect"
             @click="changeEffect(item.node, index)"
-            :class="{'active':index==recomInd}"
+            :class="{'active':item.node==store.audioEffect}"
             >
                 <span class="mleft-20" >{{item.name}}</span>
             </div>
@@ -27,10 +27,9 @@ const store = useMainStore()
 
 
 const recomEffect = [{name:'360°环绕',node:'panner'},{name:'无',node:''}] 
-let recomInd = ref(-1)
+
 
 const changeEffect = (node:string, index:number)=>{
-    recomInd.value = index
     store.audioEffect = node
 }
 </script>

@@ -24,6 +24,8 @@ const MVList = () => import('@/views/video/VideoView/MVPage.vue')
 const AllMv = () => import('@/views/video/VideoView/AllMvPage.vue')
 const TopMv = () => import('@/views/video/VideoView/TopMvPage.vue')
 
+ 
+const Page404 = ()=> import('@/views/Page404/Page404.vue')
 
 const routes: RouteRecordRaw[] = [
   {
@@ -57,11 +59,25 @@ const routes: RouteRecordRaw[] = [
       { path: '/allmv/', component: AllMv },
       { path: '/topmv', component: TopMv },
       { path: '/playlistdetail/:id', props: true, component: PlayListDetail, meta: { title: "歌单" } },
-      { path: '/userdetail/:uid', props: true, component: UserDetail, meta: { title: "用户详情" } },
+
+
       { path: '/artistdetail/:id', props: true, component: ArtistDetail, meta: { title: "歌手详情" } },
+      { path: '/userdetail/:uid', props: true, component: UserDetail, meta: { title: "用户详情" } },
       { path: '/albumdetail/:id', props: true, component: AlbumDetail, meta: { title: "专辑详情" } },
+
+
       { path: '/videodetail/:type/:id', props: true, component: VideoDetail, meta: { title: "视频/MV详情" } },
-      { path: '/personalfm/', component: PersonalFM, meta: { title: "私人FM" } },
+      { path: '/podcast', component: Page404, meta: { title: "播客" } },
+      { path: '/follows', component: Page404, meta: { title: "关注" } },
+      { path: '/live', component: Page404, meta: { title: "直播" } },
+      { path: '/personalfm', component: PersonalFM, meta: { title: "私人FM" } },
+
+
+      { path: '/localDownload', component: Page404, meta: { title: "本地与下载" } },
+      { path: '/historyplay', component: Page404, meta: { title: "最近播放" } },
+      { path: '/myCloudPan', component: Page404, meta: { title: "我的音乐云盘" } },
+      { path: '/myPodcast', component: Page404, meta: { title: "我的播客" } },
+      { path: '/myCollection', component: Page404, meta: { title: "我的收藏" } },
     ]
   },
 

@@ -18,12 +18,15 @@
     "element-plus": "^2.1.8",
     "http-proxy-middleware": "^2.0.6",
     "pinia": "^2.0.0-rc.10",
+    "streamsaver": "^2.0.6",
     "ts-md5": "^1.2.11",
     "vue": "^3.2.25",
     "vue-router": "4"
   },
+  
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0",
+    "@types/streamsaver": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
     "@vitejs/plugin-vue": "^2.3.0",

@@ -142,7 +142,6 @@ const getuserDetail = async (uid: number) => {
         ElMessage.error("获取用户信息失败")
         return 
     }}
-    console.log("res2.playlist",res2.playlist)
     for(let list of res2.playlist){
         if(list.userId == uid){
             creList.value?.push(list)

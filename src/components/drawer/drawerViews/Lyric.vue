@@ -57,6 +57,7 @@ const getLyricById = async ()=>{
     lyricLoading.value  = true
     const res = await getLyric(store.currentMusicId)
     if(res.code!=200) return
+    if(!res.lrc) return 
     lyricObj.value = useLyric(res.lrc.lyric)
     lyricLoading.value  = false
     //初始化滑动
