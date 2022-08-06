@@ -14,9 +14,13 @@ import * as icons from '@element-plus/icons-vue'
 
 import imgLazy from './hooks/imgLazy';
 
+
 if(window.__TAURI__){
-    await appWindow.center()
-    await appWindow.startDragging();
+    async function tauriInit(){
+        await appWindow.center()
+        await appWindow.startDragging();
+    }
+    tauriInit()
 }
 
 const app = createApp(App)

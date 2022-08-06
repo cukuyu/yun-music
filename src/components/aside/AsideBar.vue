@@ -30,7 +30,7 @@
                 class="menu-item text-hidden"
                 v-for="item in creList"
                 :key="item.id"
-                :class="{'active-list':item.id==indexPath}"
+                :class="{'active-list':item.id==getPlayListPathId()}"
                 @click="toPath(item.id)"
             >
             <i class="iconfont icon-song-sheet font-18 "></i>
@@ -43,7 +43,7 @@
                 class="menu-item text-hidden"
                 v-for="item in subList"
                 :key="item.id"
-                :class="{'active-list':item.id==indexPath}"
+                :class="{'active-list':item.id==getPlayListPathId()}"
                 @click="toPath(item.id)"
             >
             <i class="iconfont icon-song-sheet font-18 "></i>
@@ -89,8 +89,16 @@ let profile = computed(()=> store.profile)
 let myPlayList = computed(()=> {
     return store.myPlayList
 })
+router.currentRoute.value
 
-let indexPath = ref("/personalrecom")
+let indexPath = computed(()=>{
+    console.log("router.currentRoute.value",router.currentRoute.value)
+    return router.currentRoute.value.path
+})
+
+const getPlayListPathId = ()=>{
+    return router.currentRoute.value.path.split("/").pop()
+}
 
 onMounted(()=>{
     if(store.anonimousUser) return
@@ -109,9 +117,7 @@ let subList = computed(()=>{
 
 const toPath = (path:string|number,isLogin=false)=>{
     if(!store.login && isLogin) return 
-    indexPath.value = path+""
     if(typeof path =='number'){
-        indexPath.value = path+""
         path = '/playlistdetail/'+ path
     }
     router.push(path)
