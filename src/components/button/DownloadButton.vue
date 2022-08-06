@@ -10,10 +10,8 @@
 
 <script lang='ts' setup>
 import streamSaver from 'streamSaver'
-import { ref } from 'vue'
 import { downMusic } from '@/api/api_music'
 import { ElMessage } from 'element-plus'
-import { type } from 'os';
 const props = defineProps({
     id: {
         type: Number,
@@ -56,11 +54,7 @@ const download = async () => {
                      res.done ? writer.close() : writer.write(res.value).then(pump)
                 })
             }
-
-
             pump()
-
-
         })
     }
 }
