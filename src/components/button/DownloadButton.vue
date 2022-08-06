@@ -9,7 +9,7 @@
 
 
 <script lang='ts' setup>
-import streamSaver from 'streamSaver'
+import streamSaver from 'streamsaver'
 import { downMusic } from '@/api/api_music'
 import { ElMessage } from 'element-plus'
 const props = defineProps({
