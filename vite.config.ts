@@ -16,6 +16,13 @@ export default defineConfig(({mode})=>{
         '@': pathResolve('./src/'),
       },
     },
+    build: {
+      rollupOptions: {
+        external: [
+          "streamSaver", 
+        ],
+      },
+    },
     root: process.cwd(),
     server: {
       // port: 8080,
