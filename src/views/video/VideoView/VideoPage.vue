@@ -55,17 +55,17 @@ import {
 import {videoInfo, videoTag} from '@/types/video'
 import {ref} from 'vue'
 
-import useFormat from '@/hooks/format'
+// import useFormat from '@/hooks/format'
 import { useAnimation } from '@/hooks/animation';
-import { useRouter } from 'vue-router';
-import { useMainStore } from '@/store';
+// import { useRouter } from 'vue-router';
+// import { useMainStore } from '@/store';
 import VideoList from '@/components/list/VideoList.vue';
 
 const animation = useAnimation()
 
-const format = useFormat()
-const router = useRouter()
-const store = useMainStore()
+// const format = useFormat()
+// const router = useRouter()
+// const store = useMainStore()
 
 //视频标签列表
 let hotTags = ref<videoTag[]>(
@@ -99,7 +99,6 @@ let offset = ref(0)
 let isLoading = ref(false)
 
 const toVideoHotTag = async()=>{
-    if(!store.login) return 
     const res = await getVideoHotTag()
     if(res.code!=200) return
     hotTags.value = res.data
