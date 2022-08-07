@@ -66,10 +66,10 @@ const router = useRouter()
 const store = useMainStore()
 let commonList = reactive([
     {path:'/personalrecom', name:'发现音乐', isLogin:false},
-    {path:'/podcast', name:'播客', isLogin:false},
+    {path:'/podcast', name:'播客', isLogin:true},
     {path:'/videoview', name:'视频',  isLogin:false},
     {path:'/follows', name:'关注',  isLogin:true},
-    {path:'/live', name:'直播',  isLogin:false},
+    {path:'/live', name:'直播',  isLogin:true},
     {path:'/personalfm', name:'私人FM', isLogin:false},
 ])
 
